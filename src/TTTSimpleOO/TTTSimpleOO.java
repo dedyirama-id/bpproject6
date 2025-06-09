@@ -47,6 +47,9 @@ public class TTTSimpleOO {
         private GamePanel gamePanel;
         private JLabel statusBar;
 
+        private int scoreX = 0;
+        private int scoreO = 0;
+
         public TTTGraphics() {
             initGame();
             gamePanel = new GamePanel();
@@ -63,10 +66,14 @@ public class TTTSimpleOO {
                     if (currentState == State.PLAYING) {
                         if (row >= 0 && row < ROWS && col >= 0 && col < COLS && board[row][col] == Seed.NO_SEED) {
                             currentState = stepGame(currentPlayer, row, col);
+
+                            if (currentState == State.CROSS_WON) scoreX++;
+                            else if (currentState == State.NOUGHT_WON) scoreO++;
+
                             currentPlayer = (currentPlayer == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
                         }
                     } else {
-                        newGame();
+                        newGame(false);
                     }
                     repaint();
                 }
@@ -78,8 +85,19 @@ public class TTTSimpleOO {
             statusBar.setOpaque(true);
             statusBar.setBackground(COLOR_BG_STATUS);
 
+            JButton resetBtn = new JButton("Reset");
+            resetBtn.setFocusable(false);
+            resetBtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    newGame(true); // 🟡 Reset skor
+                    repaint();
+                }
+            });
+
             Container cp = getContentPane();
             cp.setLayout(new BorderLayout());
+            cp.add(resetBtn, BorderLayout.PAGE_START);
             cp.add(gamePanel, BorderLayout.CENTER);
             cp.add(statusBar, BorderLayout.PAGE_END);
 
@@ -88,18 +106,22 @@ public class TTTSimpleOO {
             setTitle("Tic Tac Toe");
             setVisible(true);
 
-            newGame();
+            newGame(true);
         }
 
         public void initGame() {
             board = new Seed[ROWS][COLS];
         }
 
-        public void newGame() {
+        public void newGame(boolean resetScore) {
             for (int row = 0; row < ROWS; ++row) {
                 for (int col = 0; col < COLS; ++col) {
                     board[row][col] = Seed.NO_SEED;
                 }
+            }
+            if(resetScore){
+                scoreX = 0;
+                scoreO = 0;
             }
             currentPlayer = Seed.CROSS;
             currentState = State.PLAYING;
@@ -165,16 +187,16 @@ public class TTTSimpleOO {
 
                 if (currentState == State.PLAYING) {
                     statusBar.setForeground(Color.BLACK);
-                    statusBar.setText((currentPlayer == Seed.CROSS) ? "X's Turn" : "O's Turn");
+                    statusBar.setText((currentPlayer == Seed.CROSS) ? "X's Turn | Score X: " + scoreX + " - O: " + scoreO : "O's Turn | Score X: " + scoreX + " - O: " + scoreO);
                 } else if (currentState == State.DRAW) {
                     statusBar.setForeground(Color.RED);
-                    statusBar.setText("It's a Draw! Click to play again");
+                    statusBar.setText("It's a Draw! Click to play again | Score X: " + scoreX + " - O: " + scoreO);
                 } else if (currentState == State.CROSS_WON) {
                     statusBar.setForeground(Color.RED);
-                    statusBar.setText("'X' Won! Click to play again");
+                    statusBar.setText("'X' Won! Click to play again | Score X: " + scoreX + " - O: " + scoreO);
                 } else if (currentState == State.NOUGHT_WON) {
                     statusBar.setForeground(Color.RED);
-                    statusBar.setText("'O' Won! Click to play again");
+                    statusBar.setText("'O' Won! Click to play again | Score X: " + scoreX + " - O: " + scoreO);
                 }
             }
         }
