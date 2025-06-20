@@ -1,4 +1,4 @@
-package TTTOOAdvanced;
+package TTTOOSEI;
 
 import java.io.IOException;
 import java.net.URL;
