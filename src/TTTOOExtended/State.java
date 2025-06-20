@@ -1,4 +1,4 @@
-package TTTOOAdvanced;
+package TTTOOExtended;
 
 public enum State {
     PLAYING,

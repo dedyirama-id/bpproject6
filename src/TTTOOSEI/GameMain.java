@@ -1,4 +1,4 @@
-package TTTOOAdvanced;
+package TTTOOSEI;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -11,9 +11,6 @@ public class GameMain extends JFrame {
     private Board board;
     private DrawCanvas canvas;
     private JLabel statusBar;
-    private int scoreCross = 0;
-    private int scoreNought = 0;
-    private JLabel scoreBar;
 
     public GameMain() {
         canvas = new DrawCanvas();
@@ -54,15 +51,10 @@ public class GameMain extends JFrame {
         statusBar.setFont(new Font(Font.DIALOG_INPUT, Font.BOLD, 14));
         statusBar.setBorder(BorderFactory.createEmptyBorder(2, 5, 4, 5));
 
-        scoreBar = new JLabel(getScoreText());
-        scoreBar.setFont(new Font(Font.DIALOG_INPUT, Font.BOLD, 14));
-        scoreBar.setBorder(BorderFactory.createEmptyBorder(2, 5, 4, 5));
-
         Container cp = getContentPane();
         cp.setLayout(new BorderLayout());
         cp.add(canvas, BorderLayout.CENTER);
         cp.add(statusBar, BorderLayout.SOUTH);
-        cp.add(scoreBar, BorderLayout.NORTH);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
@@ -71,10 +63,6 @@ public class GameMain extends JFrame {
 
         board = new Board();
         SoundEffect.initGame();
-    }
-
-    private String getScoreText() {
-        return "Score - X: " + scoreCross + " | O: " + scoreNought;
     }
 
     class DrawCanvas extends JPanel {
@@ -90,12 +78,8 @@ public class GameMain extends JFrame {
                 statusBar.setText("It's a Draw! Click to play again.");
             } else if (board.currentState == State.CROSS_WON) {
                 statusBar.setText("'X' Won! Click to play again.");
-                scoreCross++;
-                scoreBar.setText(getScoreText());
             } else if (board.currentState == State.NOUGHT_WON) {
                 statusBar.setText("'O' Won! Click to play again.");
-                scoreNought++;
-                scoreBar.setText(getScoreText());
             }
         }
     }
