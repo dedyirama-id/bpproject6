@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class DBConnection {
-    private static final String URL = "jdbc:mysql://avnadmin:AVNS_OuPPvBzYNDDEEY01EfH@test-db-flo-w.f.aivencloud.com:25414/ttt-db?ssl-mode=REQUIRED";
+    private static final String URL = "jdbc:mysql://ttt-user:ttt-password@test-db-flo-w.f.aivencloud.com:25414/ttt_db?ssl-mode=REQUIRED";
 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL);
