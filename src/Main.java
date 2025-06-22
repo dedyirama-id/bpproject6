@@ -1,8 +1,9 @@
-import TTTOOExtended.GameMain;
+import TTTOOExtended.MainFrame;
+
+import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
-        // Panggil disini untuk merun package
-        GameMain.main(args);
+        SwingUtilities.invokeLater(() -> new MainFrame());
     }
 }
