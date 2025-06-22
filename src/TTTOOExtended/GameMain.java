@@ -5,17 +5,16 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class GameMain extends JFrame {
-    public static final int CANVAS_WIDTH = Cell.SIZE * Board.COLS;
-    public static final int CANVAS_HEIGHT = Cell.SIZE * Board.ROWS;
-
+public class GameMain extends JPanel {
     private Board board;
     private DrawCanvas canvas;
     private JLabel statusBar;
 
     public GameMain() {
+        setLayout(new BorderLayout());
+
         canvas = new DrawCanvas();
-        canvas.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
+        canvas.setPreferredSize(new Dimension(MainFrame.CANVAS_WIDTH, MainFrame.CANVAS_HEIGHT));
 
         canvas.addMouseListener(new MouseAdapter() {
             @Override
@@ -27,8 +26,10 @@ public class GameMain extends JFrame {
                 int colSelected = mouseX / Cell.SIZE;
 
                 if (board.currentState == State.PLAYING) {
-                    if (rowSelected >= 0 && rowSelected < Board.ROWS && colSelected >= 0 && colSelected < Board.COLS
-                            && board.cells[rowSelected][colSelected].content == Seed.NO_SEED) {
+                    if (rowSelected >= 0 && rowSelected < Board.ROWS &&
+                            colSelected >= 0 && colSelected < Board.COLS &&
+                            board.cells[rowSelected][colSelected].content == Seed.NO_SEED) {
+
                         board.cells[rowSelected][colSelected].content = board.currentPlayer;
                         board.updateGame(board.currentPlayer, rowSelected, colSelected);
 
@@ -52,15 +53,8 @@ public class GameMain extends JFrame {
         statusBar.setFont(new Font(Font.DIALOG_INPUT, Font.BOLD, 14));
         statusBar.setBorder(BorderFactory.createEmptyBorder(2, 5, 4, 5));
 
-        Container cp = getContentPane();
-        cp.setLayout(new BorderLayout());
-        cp.add(canvas, BorderLayout.CENTER);
-        cp.add(statusBar, BorderLayout.SOUTH);
-
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        pack();
-        setTitle("Tic Tac Toe with Sound and Images");
-        setVisible(true);
+        add(canvas, BorderLayout.CENTER);
+        add(statusBar, BorderLayout.SOUTH);
 
         board = new Board();
         SoundEffect.initGame();
@@ -84,9 +78,4 @@ public class GameMain extends JFrame {
             }
         }
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new GameMain());
-    }
 }
-
