@@ -1,8 +1,10 @@
 package TTTOOExtended;
 
 import java.awt.*;
+
 /**
- * The Cell class models each individual cell of the game board.
+ * Represents a single cell in the Tic Tac Toe board.
+ * Each cell holds its coordinates and current content (CROSS, NOUGHT, or empty).
  */
 public class Cell {
     Seed content;
@@ -14,10 +16,12 @@ public class Cell {
         content = Seed.NO_SEED;
     }
 
+    // Resets the cell content to empty
     public void newGame() {
         content = Seed.NO_SEED;
     }
 
+    // Renders the seed symbol inside the cell
     public void paint(Graphics g, int cellWidth, int cellHeight) {
         int paddingX = cellWidth / 5;
         int paddingY = cellHeight / 5;

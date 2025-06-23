@@ -6,7 +6,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
 
+/**
+ * Registration screen panel that allows new users to sign up.
+ */
 public class RegisterPanel extends JPanel {
+
     public RegisterPanel(CardLayout cardLayout, JPanel mainPanel) {
         setLayout(new GridBagLayout());
         setBorder(BorderFactory.createEmptyBorder(30, 80, 30, 80));
@@ -15,7 +19,6 @@ public class RegisterPanel extends JPanel {
         gbc.insets = new Insets(5, 10, 5, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Components
         // Heading
         JLabel heading = new JLabel("REGISTER");
         heading.setFont(new Font("Arial", Font.BOLD, 20));
@@ -30,34 +33,30 @@ public class RegisterPanel extends JPanel {
         gbc.gridwidth = 1;
         int row = 1;
 
-        // Username
+        // Username input
         JLabel usernameLabel = new JLabel("Username:");
         JTextField usernameField = new JTextField(15);
-
         gbc.gridx = 0;
         gbc.gridy = row;
         gbc.anchor = GridBagConstraints.LINE_END;
         add(usernameLabel, gbc);
-
         gbc.gridx = 1;
         gbc.anchor = GridBagConstraints.LINE_START;
         add(usernameField, gbc);
 
-        // Password
+        // Password input
         JLabel passwordLabel = new JLabel("Password:");
         JPasswordField passwordField = new JPasswordField(15);
-
         row++;
         gbc.gridx = 0;
         gbc.gridy = row;
         gbc.anchor = GridBagConstraints.LINE_END;
         add(passwordLabel, gbc);
-
         gbc.gridx = 1;
         gbc.anchor = GridBagConstraints.LINE_START;
         add(passwordField, gbc);
 
-        // Register Button
+        // Register button
         JButton registerButton = new JButton("Register");
         row++;
         gbc.gridx = 0;
@@ -66,14 +65,13 @@ public class RegisterPanel extends JPanel {
         gbc.anchor = GridBagConstraints.CENTER;
         add(registerButton, gbc);
 
-        // Back Button
+        // Back button
         JButton backButton = new JButton("◀️ Back");
-
         row++;
         gbc.gridy = row;
         add(backButton, gbc);
 
-        // Event handler
+        // Register event handler
         registerButton.addActionListener(e -> {
             String username = usernameField.getText().trim();
             String password = new String(passwordField.getPassword());
@@ -94,6 +92,7 @@ public class RegisterPanel extends JPanel {
             }
         });
 
+        // Back button event
         backButton.addActionListener(e -> cardLayout.show(mainPanel, "Welcome"));
     }
 }

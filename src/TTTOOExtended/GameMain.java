@@ -5,6 +5,10 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * GameMain is the panel that handles the Tic Tac Toe gameplay.
+ * It includes the game canvas, control buttons, and status indicators.
+ */
 public class GameMain extends JPanel {
     private Board board;
     private DrawCanvas canvas;
@@ -15,44 +19,37 @@ public class GameMain extends JPanel {
     public GameMain(MainFrame mainFrame) {
         setLayout(new BorderLayout());
 
-        // Header panel (Back + Reset)
-        JPanel headerPanel = new JPanel();
-        headerPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        // Header panel (Back and Reset buttons)
+        JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JButton backButton = new JButton("Back");
         JButton resetButton = new JButton("Reset");
 
-        backButton.addActionListener(e -> {
-            mainFrame.getCardLayout().show(mainFrame.getMainPanel(), "MainMenu");
-        });
+        backButton.addActionListener(e -> mainFrame.getCardLayout().show(mainFrame.getMainPanel(), "MainMenu"));
 
         resetButton.addActionListener(e -> {
             if (isSavingInProgress) return;
-
             board.initGame();
             SoundEffect.initGame();
             savingLabel.setText("");
             repaint();
         });
 
-
         headerPanel.add(backButton);
         headerPanel.add(resetButton);
         add(headerPanel, BorderLayout.NORTH);
 
-        // Canvas (tengah)
+        // Game canvas (center)
         canvas = new DrawCanvas();
         canvas.setBackground(Color.WHITE);
         canvas.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (isSavingInProgress) return; // ⛔ blok input saat saving
+                if (isSavingInProgress) return;
 
                 int mouseX = e.getX();
                 int mouseY = e.getY();
-
                 int cellWidth = canvas.getWidth() / Board.COLS;
                 int cellHeight = canvas.getHeight() / Board.ROWS;
-
                 int rowSelected = mouseY / cellHeight;
                 int colSelected = mouseX / cellWidth;
 
@@ -73,10 +70,9 @@ public class GameMain extends JPanel {
                         }
                     }
                 } else if (!isSavingInProgress) {
-                    // restart game (hanya jika tidak sedang menyimpan)
                     board.initGame();
                     SoundEffect.initGame();
-                    savingLabel.setText(""); // ✅ hapus "History saved!" saat mulai ulang
+                    savingLabel.setText("");
                 }
 
                 repaint();
@@ -85,9 +81,8 @@ public class GameMain extends JPanel {
 
         add(canvas, BorderLayout.CENTER);
 
-        // Footer (status bar)
-        JPanel footerPanel = new JPanel();
-        footerPanel.setLayout(new BorderLayout());
+        // Footer panel (status and saving info)
+        JPanel footerPanel = new JPanel(new BorderLayout());
 
         statusBar = new JLabel(" ");
         statusBar.setFont(new Font(Font.DIALOG_INPUT, Font.BOLD, 14));
@@ -104,6 +99,7 @@ public class GameMain extends JPanel {
 
         add(footerPanel, BorderLayout.SOUTH);
 
+        // Initialize the game board with saveGame behavior override
         board = new Board() {
             @Override
             protected void saveGame() {
@@ -112,7 +108,6 @@ public class GameMain extends JPanel {
 
                 new Thread(() -> {
                     super.saveGame();
-
                     SwingUtilities.invokeLater(() -> {
                         savingLabel.setText("History saved!");
                         isSavingInProgress = false;
@@ -124,12 +119,14 @@ public class GameMain extends JPanel {
         SoundEffect.initGame();
     }
 
+    // Display saving message immediately when game ends
     private void showSavingStatus() {
-        // dipanggil saat game selesai
         savingLabel.setText("Saving history...");
-        // Penundaan "History saved!" dilakukan di saveGame()
     }
 
+    /**
+     * DrawCanvas handles the rendering of the Tic Tac Toe grid and game state.
+     */
     class DrawCanvas extends JPanel {
         @Override
         protected void paintComponent(Graphics g) {

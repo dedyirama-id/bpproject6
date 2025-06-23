@@ -9,6 +9,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * HistoryPanel displays a list of past game sessions for the current user,
+ * including navigation controls and game board rendering.
+ */
 public class HistoryPanel extends JPanel {
     private JLabel lblTimestamp;
     private JLabel lblWinner;
@@ -22,30 +26,30 @@ public class HistoryPanel extends JPanel {
         this.mainFrame = mainFrame;
         setLayout(new BorderLayout());
 
-        // Header panel
+        // Header
         JPanel topPanel = new JPanel(new GridLayout(1, 2));
-        topPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // Padding horizontal
-
+        topPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         lblTimestamp = new JLabel("");
         lblWinner = new JLabel("Winner: ");
         topPanel.add(lblTimestamp);
         topPanel.add(lblWinner);
         add(topPanel, BorderLayout.NORTH);
 
-        // Board panel
+        // Board
         JPanel boardPanel = new JPanel(new GridLayout(3, 3));
         cellButtons = new JButton[3][3];
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                cellButtons[i][j] = new JButton();
-                cellButtons[i][j].setEnabled(false);
-                cellButtons[i][j].setFont(new Font(Font.SANS_SERIF, Font.BOLD, 48));
-                boardPanel.add(cellButtons[i][j]);
+                JButton cell = new JButton();
+                cell.setEnabled(false);
+                cell.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 48));
+                boardPanel.add(cell);
+                cellButtons[i][j] = cell;
             }
         }
         add(boardPanel, BorderLayout.CENTER);
 
-        // Navigation panel
+        // Navigation
         JPanel navPanel = new JPanel();
         btnPrev = new JButton("Prev");
         btnNext = new JButton("Next");
@@ -78,6 +82,7 @@ public class HistoryPanel extends JPanel {
         loadUserHistories();
     }
 
+    // Loads the user's game history from the database
     private void loadUserHistories() {
         histories = DBService.getGameHistoriesByUserId(Session.getCurrentUserId());
         if (!histories.isEmpty()) {
@@ -91,6 +96,7 @@ public class HistoryPanel extends JPanel {
         }
     }
 
+    // Displays the game state at the current index
     private void loadHistory() {
         GameHistory game = histories.get(currentIndex);
         lblTimestamp.setText(game.timestamp);
@@ -103,9 +109,7 @@ public class HistoryPanel extends JPanel {
             }
         }
 
-        // Disable tombol prev jika di history terakhir
         btnPrev.setEnabled(currentIndex < histories.size() - 1);
-        // Disable tombol next jika di history pertama
         btnNext.setEnabled(currentIndex > 0);
     }
 }

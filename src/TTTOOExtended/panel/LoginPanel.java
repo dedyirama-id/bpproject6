@@ -8,16 +8,19 @@ import TTTOOExtended.model.User;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * LoginPanel handles user authentication and UI layout for the login screen.
+ */
 public class LoginPanel extends JPanel {
+
     public LoginPanel(CardLayout cardLayout, JPanel mainPanel, MainFrame mainFrame) {
         setLayout(new GridBagLayout());
         setBorder(BorderFactory.createEmptyBorder(30, 80, 30, 80));
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 10, 5, 10); // Spasi antar komponen
+        gbc.insets = new Insets(5, 10, 5, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Components
         // Heading
         JLabel heading = new JLabel("LOGIN");
         heading.setFont(new Font("Arial", Font.BOLD, 20));
@@ -32,34 +35,30 @@ public class LoginPanel extends JPanel {
         gbc.gridwidth = 1;
         int row = 1;
 
-        // Username
+        // Username input
         JLabel usernameLabel = new JLabel("Username:");
         JTextField usernameField = new JTextField(15);
-
         gbc.gridx = 0;
         gbc.gridy = row;
         gbc.anchor = GridBagConstraints.LINE_END;
         add(usernameLabel, gbc);
-
         gbc.gridx = 1;
         gbc.anchor = GridBagConstraints.LINE_START;
         add(usernameField, gbc);
 
-        // Password
+        // Password input
         JLabel passwordLabel = new JLabel("Password:");
         JPasswordField passwordField = new JPasswordField(15);
-
         row++;
         gbc.gridx = 0;
         gbc.gridy = row;
         gbc.anchor = GridBagConstraints.LINE_END;
         add(passwordLabel, gbc);
-
         gbc.gridx = 1;
         gbc.anchor = GridBagConstraints.LINE_START;
         add(passwordField, gbc);
 
-        // Login Button
+        // Login button
         JButton loginButton = new JButton("Login");
         row++;
         gbc.gridx = 0;
@@ -68,14 +67,13 @@ public class LoginPanel extends JPanel {
         gbc.anchor = GridBagConstraints.CENTER;
         add(loginButton, gbc);
 
-        // Back Button
+        // Back button
         JButton backButton = new JButton("◀️ Back");
-
         row++;
         gbc.gridy = row;
         add(backButton, gbc);
 
-        // Event handler
+        // Login action
         loginButton.addActionListener(e -> {
             String username = usernameField.getText().trim();
             String password = new String(passwordField.getPassword());
@@ -95,7 +93,7 @@ public class LoginPanel extends JPanel {
             }
         });
 
+        // Back action
         backButton.addActionListener(e -> cardLayout.show(mainPanel, "Welcome"));
     }
 }
-
