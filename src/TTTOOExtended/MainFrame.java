@@ -1,45 +1,60 @@
 package TTTOOExtended;
 
+import TTTOOExtended.model.GameHistory;
+import TTTOOExtended.model.Session;
+import TTTOOExtended.model.User;
+import TTTOOExtended.panel.*;
+import TTTOOExtended.service.DBService;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
+/**
+ * MainFrame serves as the primary window for the Tic Tac Toe application.
+ * It manages different screens using a CardLayout and displays the current user's info.
+ */
 public class MainFrame extends JFrame {
-    public static final int CANVAS_WIDTH = Cell.SIZE * Board.COLS;
-    public static final int CANVAS_HEIGHT = Cell.SIZE * Board.ROWS;
-
-    private CardLayout cardLayout;
-    private JPanel mainPanel;
-    private JLabel userInfoLabel;
+    private final CardLayout cardLayout;
+    private final JPanel mainPanel;
+    private final JLabel userInfoLabel;
 
     public MainFrame() {
+        // Frame configuration
         setTitle("Tic Tac Toe");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
         setLayout(new BorderLayout());
+        setResizable(true);
+        setSize(500, 500);
+        setLocationRelativeTo(null);
 
+        // Top label for displaying user information
         userInfoLabel = new JLabel("");
         userInfoLabel.setHorizontalAlignment(SwingConstants.LEFT);
         userInfoLabel.setFont(new Font("Arial", Font.BOLD, 12));
         userInfoLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         add(userInfoLabel, BorderLayout.NORTH);
 
+        // Main panel with CardLayout to manage different views
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
 
+        // Add all panels to the main container
         mainPanel.add(new WelcomePanel(cardLayout, mainPanel), "Welcome");
         mainPanel.add(new RegisterPanel(cardLayout, mainPanel), "Register");
-        mainPanel.add(new LoginPanel(cardLayout, mainPanel, this), "Login"); // ← penting!
-        mainPanel.add(new MainMenuPanel(cardLayout, mainPanel), "MainMenu");
-        mainPanel.add(new GameMain(), "Game");
+        mainPanel.add(new LoginPanel(cardLayout, mainPanel, this), "Login");
+        mainPanel.add(new MainMenuPanel(this), "MainMenu");
+        mainPanel.add(new GameMain(this), "Game");
 
+        // Add main panel to the center of the frame
         add(mainPanel, BorderLayout.CENTER);
 
-        pack();
+        // Show the frame and default to Welcome screen
         setVisible(true);
-
         cardLayout.show(mainPanel, "Welcome");
     }
 
+    // Updates the user info label at the top of the screen
     public void updateUserInfoLabel() {
         User user = Session.getUser();
         if (user != null) {
@@ -49,7 +64,26 @@ public class MainFrame extends JFrame {
         }
     }
 
+    // Application entry point
     public static void main(String[] args) {
         SwingUtilities.invokeLater(MainFrame::new);
+    }
+
+    // Show history panel
+    public void showHistoryPanelForUser(int userId) {
+        List<GameHistory> histories = DBService.getGameHistoriesByUserId(userId);
+        HistoryPanel historyPanel = new HistoryPanel(this, histories);
+
+        mainPanel.add(historyPanel, "History");
+        cardLayout.show(mainPanel, "History");
+    }
+
+    // Getters for CardLayout and main panel
+    public CardLayout getCardLayout() {
+        return cardLayout;
+    }
+
+    public JPanel getMainPanel() {
+        return mainPanel;
     }
 }
