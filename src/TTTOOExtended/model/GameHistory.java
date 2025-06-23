@@ -1,4 +1,4 @@
-package TTTOOExtended;
+package TTTOOExtended.model;
 
 public class GameHistory {
     public int id;

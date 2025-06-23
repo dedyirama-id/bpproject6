@@ -1,5 +1,8 @@
 package TTTOOExtended;
 
+import TTTOOExtended.model.Session;
+import TTTOOExtended.service.DBService;
+
 import java.awt.*;
 
 public class Board {
@@ -30,17 +33,23 @@ public class Board {
         currentState = State.PLAYING;
     }
 
-    public void paint(Graphics g) {
+    public void paint(Graphics g, int width, int height) {
+        int cellWidth = width / COLS;
+        int cellHeight = height / ROWS;
+
         g.setColor(Color.BLACK);
         for (int row = 1; row < ROWS; ++row) {
-            g.fillRoundRect(0, Cell.SIZE * row - 4, Cell.SIZE * COLS, 8, 8, 8);
+            int y = row * cellHeight;
+            g.fillRoundRect(0, y - 2, width, 4, 8, 8);
         }
         for (int col = 1; col < COLS; ++col) {
-            g.fillRoundRect(Cell.SIZE * col - 4, 0, 8, Cell.SIZE * ROWS, 8, 8);
+            int x = col * cellWidth;
+            g.fillRoundRect(x - 2, 0, 4, height, 8, 8);
         }
+
         for (int row = 0; row < ROWS; ++row) {
             for (int col = 0; col < COLS; ++col) {
-                cells[row][col].paint(g);
+                cells[row][col].paint(g, cellWidth, cellHeight);
             }
         }
     }
@@ -52,7 +61,9 @@ public class Board {
             currentState = State.DRAW;
         }
 
-        saveGameIfEnded();
+        if (currentState != State.PLAYING) {
+            new Thread(this::saveGame).start();
+        }
     }
 
     public boolean isDraw() {
@@ -73,30 +84,28 @@ public class Board {
                 || row + col == 2 && cells[0][2].content == theSeed && cells[1][1].content == theSeed && cells[2][0].content == theSeed);
     }
 
-    private void saveGameIfEnded() {
-        if (currentState == State.CROSS_WON || currentState == State.NOUGHT_WON || currentState == State.DRAW) {
-            String winner;
-            if (currentState == State.CROSS_WON) {
-                winner = "X";
-            } else if (currentState == State.NOUGHT_WON) {
-                winner = "O";
-            } else {
-                winner = "Draw";
-            }
-
-            StringBuilder finalState = new StringBuilder();
-            for (int row = 0; row < ROWS; row++) {
-                for (int col = 0; col < COLS; col++) {
-                    String value = cells[row][col].content == Seed.CROSS ? "X" :
-                            cells[row][col].content == Seed.NOUGHT ? "O" : "";
-                    finalState.append(value);
-                    if (col < 2) finalState.append(",");
-                }
-                if (row < 2) finalState.append(";");
-            }
-
-            DBConnection.saveGameHistory(Session.getCurrentUserId(), winner, finalState.toString());
+    protected void saveGame() {
+        String winner;
+        if (currentState == State.CROSS_WON) {
+            winner = "X";
+        } else if (currentState == State.NOUGHT_WON) {
+            winner = "O";
+        } else {
+            winner = "Draw";
         }
+
+        StringBuilder finalState = new StringBuilder();
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                String value = cells[row][col].content == Seed.CROSS ? "X" :
+                        cells[row][col].content == Seed.NOUGHT ? "O" : "";
+                finalState.append(value);
+                if (col < 2) finalState.append(",");
+            }
+            if (row < 2) finalState.append(";");
+        }
+
+        DBService.saveGameHistory(Session.getCurrentUserId(), winner, finalState.toString());
     }
 
 }

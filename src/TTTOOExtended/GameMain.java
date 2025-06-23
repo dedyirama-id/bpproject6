@@ -9,21 +9,52 @@ public class GameMain extends JPanel {
     private Board board;
     private DrawCanvas canvas;
     private JLabel statusBar;
+    private JLabel savingLabel;
+    private volatile boolean isSavingInProgress = false;
 
-    public GameMain() {
+    public GameMain(MainFrame mainFrame) {
         setLayout(new BorderLayout());
 
-        canvas = new DrawCanvas();
-        canvas.setPreferredSize(new Dimension(MainFrame.CANVAS_WIDTH, MainFrame.CANVAS_HEIGHT));
+        // Header panel (Back + Reset)
+        JPanel headerPanel = new JPanel();
+        headerPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        JButton backButton = new JButton("Back");
+        JButton resetButton = new JButton("Reset");
 
+        backButton.addActionListener(e -> {
+            mainFrame.getCardLayout().show(mainFrame.getMainPanel(), "MainMenu");
+        });
+
+        resetButton.addActionListener(e -> {
+            if (isSavingInProgress) return;
+
+            board.initGame();
+            SoundEffect.initGame();
+            savingLabel.setText("");
+            repaint();
+        });
+
+
+        headerPanel.add(backButton);
+        headerPanel.add(resetButton);
+        add(headerPanel, BorderLayout.NORTH);
+
+        // Canvas (tengah)
+        canvas = new DrawCanvas();
+        canvas.setBackground(Color.WHITE);
         canvas.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                if (isSavingInProgress) return; // ⛔ blok input saat saving
+
                 int mouseX = e.getX();
                 int mouseY = e.getY();
 
-                int rowSelected = mouseY / Cell.SIZE;
-                int colSelected = mouseX / Cell.SIZE;
+                int cellWidth = canvas.getWidth() / Board.COLS;
+                int cellHeight = canvas.getHeight() / Board.ROWS;
+
+                int rowSelected = mouseY / cellHeight;
+                int colSelected = mouseX / cellWidth;
 
                 if (board.currentState == State.PLAYING) {
                     if (rowSelected >= 0 && rowSelected < Board.ROWS &&
@@ -38,34 +69,75 @@ public class GameMain extends JPanel {
                             board.currentPlayer = (board.currentPlayer == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
                         } else {
                             SoundEffect.DIE.play();
+                            showSavingStatus();
                         }
                     }
-                } else {
+                } else if (!isSavingInProgress) {
+                    // restart game (hanya jika tidak sedang menyimpan)
                     board.initGame();
                     SoundEffect.initGame();
+                    savingLabel.setText(""); // ✅ hapus "History saved!" saat mulai ulang
                 }
 
                 repaint();
             }
         });
 
+        add(canvas, BorderLayout.CENTER);
+
+        // Footer (status bar)
+        JPanel footerPanel = new JPanel();
+        footerPanel.setLayout(new BorderLayout());
+
         statusBar = new JLabel(" ");
         statusBar.setFont(new Font(Font.DIALOG_INPUT, Font.BOLD, 14));
-        statusBar.setBorder(BorderFactory.createEmptyBorder(2, 5, 4, 5));
+        statusBar.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
 
-        add(canvas, BorderLayout.CENTER);
-        add(statusBar, BorderLayout.SOUTH);
+        savingLabel = new JLabel(" ");
+        savingLabel.setFont(new Font(Font.DIALOG_INPUT, Font.PLAIN, 12));
+        savingLabel.setForeground(Color.GRAY);
+        savingLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        savingLabel.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 10));
 
-        board = new Board();
+        footerPanel.add(statusBar, BorderLayout.WEST);
+        footerPanel.add(savingLabel, BorderLayout.EAST);
+
+        add(footerPanel, BorderLayout.SOUTH);
+
+        board = new Board() {
+            @Override
+            protected void saveGame() {
+                isSavingInProgress = true;
+                SwingUtilities.invokeLater(() -> savingLabel.setText("Saving history..."));
+
+                new Thread(() -> {
+                    super.saveGame();
+
+                    SwingUtilities.invokeLater(() -> {
+                        savingLabel.setText("History saved!");
+                        isSavingInProgress = false;
+                    });
+                }).start();
+            }
+        };
+
         SoundEffect.initGame();
+    }
+
+    private void showSavingStatus() {
+        // dipanggil saat game selesai
+        savingLabel.setText("Saving history...");
+        // Penundaan "History saved!" dilakukan di saveGame()
     }
 
     class DrawCanvas extends JPanel {
         @Override
-        public void paintComponent(Graphics g) {
+        protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            setBackground(Color.WHITE);
-            board.paint(g);
+
+            int width = getWidth();
+            int height = getHeight();
+            board.paint(g, width, height);
 
             if (board.currentState == State.PLAYING) {
                 statusBar.setText(board.currentPlayer == Seed.CROSS ? "X's Turn" : "O's Turn");

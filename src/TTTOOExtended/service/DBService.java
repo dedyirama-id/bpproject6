@@ -1,10 +1,13 @@
-package TTTOOExtended;
+package TTTOOExtended.service;
+
+import TTTOOExtended.model.GameHistory;
+import TTTOOExtended.model.User;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DBConnection {
+public class DBService {
     private static final String URL = "jdbc:mysql://ttt-user:ttt-password@test-db-flo-w.f.aivencloud.com:25414/ttt_db?ssl-mode=REQUIRED";
 
     public static Connection getConnection() throws SQLException {

@@ -6,11 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-      </profile>
-      <profile name="Annotation profile for bpproject6" enabled="true">
-        <sourceOutputDir name="src/target/generated-sources/annotations" />
-        <sourceTestOutputDir name="src/target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
+        <module name="bpproject6" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

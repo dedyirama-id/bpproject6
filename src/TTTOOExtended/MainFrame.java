@@ -1,12 +1,16 @@
 package TTTOOExtended;
 
+import TTTOOExtended.model.Session;
+import TTTOOExtended.model.User;
+import TTTOOExtended.panel.LoginPanel;
+import TTTOOExtended.panel.MainMenuPanel;
+import TTTOOExtended.panel.RegisterPanel;
+import TTTOOExtended.panel.WelcomePanel;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class MainFrame extends JFrame {
-    public static final int CANVAS_WIDTH = Cell.SIZE * Board.COLS;
-    public static final int CANVAS_HEIGHT = Cell.SIZE * Board.ROWS;
-
     private CardLayout cardLayout;
     private JPanel mainPanel;
     private JLabel userInfoLabel;
@@ -16,6 +20,10 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
+
+        setResizable(true);
+        setSize(500, 500);
+        setLocationRelativeTo(null);
 
         userInfoLabel = new JLabel("");
         userInfoLabel.setHorizontalAlignment(SwingConstants.LEFT);
@@ -30,13 +38,11 @@ public class MainFrame extends JFrame {
         mainPanel.add(new RegisterPanel(cardLayout, mainPanel), "Register");
         mainPanel.add(new LoginPanel(cardLayout, mainPanel, this), "Login"); // ← penting!
         mainPanel.add(new MainMenuPanel(cardLayout, mainPanel, this), "MainMenu");
-        mainPanel.add(new GameMain(), "Game");
+        mainPanel.add(new GameMain(this), "Game");
 
         add(mainPanel, BorderLayout.CENTER);
 
-        pack();
         setVisible(true);
-
         cardLayout.show(mainPanel, "Welcome");
     }
 

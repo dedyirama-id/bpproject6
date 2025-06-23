@@ -1,4 +1,4 @@
-package TTTOOExtended;
+package TTTOOExtended.model;
 
 public class User {
     private final int id;
