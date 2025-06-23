@@ -1,11 +1,14 @@
 package TTTOOExtended;
 
+import TTTOOExtended.model.GameHistory;
 import TTTOOExtended.model.Session;
 import TTTOOExtended.model.User;
 import TTTOOExtended.panel.*;
+import TTTOOExtended.service.DBService;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 /**
  * MainFrame serves as the primary window for the Tic Tac Toe application.
@@ -42,7 +45,6 @@ public class MainFrame extends JFrame {
         mainPanel.add(new LoginPanel(cardLayout, mainPanel, this), "Login");
         mainPanel.add(new MainMenuPanel(this), "MainMenu");
         mainPanel.add(new GameMain(this), "Game");
-        mainPanel.add(new HistoryPanel(this), "History");
 
         // Add main panel to the center of the frame
         add(mainPanel, BorderLayout.CENTER);
@@ -65,6 +67,15 @@ public class MainFrame extends JFrame {
     // Application entry point
     public static void main(String[] args) {
         SwingUtilities.invokeLater(MainFrame::new);
+    }
+
+    // Show history panel
+    public void showHistoryPanelForUser(int userId) {
+        List<GameHistory> histories = DBService.getGameHistoriesByUserId(userId);
+        HistoryPanel historyPanel = new HistoryPanel(this, histories);
+
+        mainPanel.add(historyPanel, "History");
+        cardLayout.show(mainPanel, "History");
     }
 
     // Getters for CardLayout and main panel

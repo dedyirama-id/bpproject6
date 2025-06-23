@@ -10,10 +10,10 @@ import java.awt.event.MouseEvent;
  * It includes the game canvas, control buttons, and status indicators.
  */
 public class GameMain extends JPanel {
-    private Board board;
+    private final Board board;
     private final DrawCanvas canvas;
     private final JLabel statusBar;
-    private JLabel savingLabel;
+    private final JLabel savingLabel;
     private volatile boolean isSavingInProgress = false;
 
     public GameMain(MainFrame mainFrame) {

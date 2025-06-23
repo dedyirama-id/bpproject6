@@ -1,6 +1,7 @@
 package TTTOOExtended.panel;
 
 import TTTOOExtended.MainFrame;
+import TTTOOExtended.model.Session;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,7 +39,15 @@ public class MainMenuPanel extends JPanel {
         add(Box.createVerticalGlue());
 
         // Actions
-        historyButton.addActionListener(_ -> mainFrame.getCardLayout().show(mainFrame.getMainPanel(), "History"));
+        historyButton.addActionListener(_ -> {
+            var user = Session.getUser();
+            if (user == null) {
+                JOptionPane.showMessageDialog(this, "You must be logged in to view history.");
+                return;
+            }
+
+            mainFrame.showHistoryPanelForUser(user.getId());
+        });
 
         startButton.addActionListener(_ -> mainFrame.getCardLayout().show(mainFrame.getMainPanel(), "Game"));
 
