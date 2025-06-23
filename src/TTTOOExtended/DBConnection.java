@@ -1,6 +1,8 @@
 package TTTOOExtended;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DBConnection {
     private static final String URL = "jdbc:mysql://ttt-user:ttt-password@test-db-flo-w.f.aivencloud.com:25414/ttt_db?ssl-mode=REQUIRED";
@@ -40,4 +42,39 @@ public class DBConnection {
 
         return null;
     }
+
+    public static void saveGameHistory(int userId, String winner, String finalState) {
+        String sql = "INSERT INTO game_history (user_id, winner, final_state) VALUES (?, ?, ?)";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ps.setString(2, winner);
+            ps.setString(3, finalState);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static List<GameHistory> getGameHistoriesByUserId(int userId) {
+        List<GameHistory> historyList = new ArrayList<>();
+        String sql = "SELECT * FROM game_history WHERE user_id = ? ORDER BY timestamp DESC";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                GameHistory history = new GameHistory(
+                        rs.getInt("id"),
+                        rs.getInt("user_id"),
+                        rs.getString("winner"),
+                        rs.getString("final_state"),
+                        rs.getString("timestamp")
+                );
+                historyList.add(history);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return historyList;
+    }
+
 }

@@ -11,6 +11,10 @@ public class Session {
         return currentUser;
     }
 
+    public static int getCurrentUserId() {
+        return currentUser.getId();
+    }
+
     public static void clear() {
         currentUser = null;
     }

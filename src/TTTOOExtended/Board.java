@@ -51,6 +51,8 @@ public class Board {
         } else if (isDraw()) {
             currentState = State.DRAW;
         }
+
+        saveGameIfEnded();
     }
 
     public boolean isDraw() {
@@ -70,4 +72,31 @@ public class Board {
                 || row == col && cells[0][0].content == theSeed && cells[1][1].content == theSeed && cells[2][2].content == theSeed
                 || row + col == 2 && cells[0][2].content == theSeed && cells[1][1].content == theSeed && cells[2][0].content == theSeed);
     }
+
+    private void saveGameIfEnded() {
+        if (currentState == State.CROSS_WON || currentState == State.NOUGHT_WON || currentState == State.DRAW) {
+            String winner;
+            if (currentState == State.CROSS_WON) {
+                winner = "X";
+            } else if (currentState == State.NOUGHT_WON) {
+                winner = "O";
+            } else {
+                winner = "Draw";
+            }
+
+            StringBuilder finalState = new StringBuilder();
+            for (int row = 0; row < ROWS; row++) {
+                for (int col = 0; col < COLS; col++) {
+                    String value = cells[row][col].content == Seed.CROSS ? "X" :
+                            cells[row][col].content == Seed.NOUGHT ? "O" : "";
+                    finalState.append(value);
+                    if (col < 2) finalState.append(",");
+                }
+                if (row < 2) finalState.append(";");
+            }
+
+            DBConnection.saveGameHistory(Session.getCurrentUserId(), winner, finalState.toString());
+        }
+    }
+
 }

@@ -29,7 +29,7 @@ public class MainFrame extends JFrame {
         mainPanel.add(new WelcomePanel(cardLayout, mainPanel), "Welcome");
         mainPanel.add(new RegisterPanel(cardLayout, mainPanel), "Register");
         mainPanel.add(new LoginPanel(cardLayout, mainPanel, this), "Login"); // ← penting!
-        mainPanel.add(new MainMenuPanel(cardLayout, mainPanel), "MainMenu");
+        mainPanel.add(new MainMenuPanel(cardLayout, mainPanel, this), "MainMenu");
         mainPanel.add(new GameMain(), "Game");
 
         add(mainPanel, BorderLayout.CENTER);
@@ -51,5 +51,13 @@ public class MainFrame extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(MainFrame::new);
+    }
+
+    public CardLayout getCardLayout() {
+        return cardLayout;
+    }
+
+    public JPanel getMainPanel() {
+        return mainPanel;
     }
 }
