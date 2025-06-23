@@ -9,26 +9,44 @@ public class MainFrame extends JFrame {
 
     private CardLayout cardLayout;
     private JPanel mainPanel;
+    private JLabel userInfoLabel;
 
     public MainFrame() {
         setTitle("Tic Tac Toe");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
+
+        userInfoLabel = new JLabel("");
+        userInfoLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        userInfoLabel.setFont(new Font("Arial", Font.BOLD, 12));
+        userInfoLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        add(userInfoLabel, BorderLayout.NORTH);
 
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
 
-        // Tambahkan semua panel
         mainPanel.add(new WelcomePanel(cardLayout, mainPanel), "Welcome");
         mainPanel.add(new RegisterPanel(cardLayout, mainPanel), "Register");
+        mainPanel.add(new LoginPanel(cardLayout, mainPanel, this), "Login"); // ← penting!
         mainPanel.add(new MainMenuPanel(cardLayout, mainPanel), "MainMenu");
         mainPanel.add(new GameMain(), "Game");
 
-        add(mainPanel);
+        add(mainPanel, BorderLayout.CENTER);
+
         pack();
         setVisible(true);
 
         cardLayout.show(mainPanel, "Welcome");
+    }
+
+    public void updateUserInfoLabel() {
+        User user = Session.getUser();
+        if (user != null) {
+            userInfoLabel.setText("Hi, " + user.getUsername() + "!");
+        } else {
+            userInfoLabel.setText("Not logged in");
+        }
     }
 
     public static void main(String[] args) {

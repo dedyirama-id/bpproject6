@@ -9,9 +9,12 @@ public class WelcomePanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(60, 80, 60, 80));
 
         JButton registerButton = new JButton("Register");
+        JButton loginButton = new JButton("Login");
 
         registerButton.addActionListener(e -> cardLayout.show(mainPanel, "Register"));
+        loginButton.addActionListener(e -> cardLayout.show(mainPanel, "Login"));
 
         add(registerButton);
+        add(loginButton);
     }
 }
