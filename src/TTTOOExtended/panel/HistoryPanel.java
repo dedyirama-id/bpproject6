@@ -14,16 +14,14 @@ import java.util.List;
  * including navigation controls and game board rendering.
  */
 public class HistoryPanel extends JPanel {
-    private JLabel lblTimestamp;
-    private JLabel lblWinner;
-    private JButton[][] cellButtons;
-    private JButton btnPrev, btnNext;
+    private final JLabel lblTimestamp;
+    private final JLabel lblWinner;
+    private final JButton[][] cellButtons;
+    private final JButton btnPrev, btnNext;
     private List<GameHistory> histories;
     private int currentIndex = 0;
-    private MainFrame mainFrame;
 
     public HistoryPanel(MainFrame mainFrame) {
-        this.mainFrame = mainFrame;
         setLayout(new BorderLayout());
 
         // Header
@@ -54,14 +52,14 @@ public class HistoryPanel extends JPanel {
         btnPrev = new JButton("Prev");
         btnNext = new JButton("Next");
 
-        btnPrev.addActionListener(e -> {
+        btnPrev.addActionListener(_ -> {
             if (currentIndex < histories.size() - 1) {
                 currentIndex++;
                 loadHistory();
             }
         });
 
-        btnNext.addActionListener(e -> {
+        btnNext.addActionListener(_ -> {
             if (currentIndex > 0) {
                 currentIndex--;
                 loadHistory();
@@ -69,8 +67,8 @@ public class HistoryPanel extends JPanel {
         });
 
         JButton btnBack = new JButton("Back to Menu");
-        btnBack.addActionListener(e -> {
-            mainFrame.setContentPane(new MainMenuPanel(mainFrame.getCardLayout(), mainFrame.getMainPanel(), mainFrame));
+        btnBack.addActionListener(_ -> {
+            mainFrame.setContentPane(new MainMenuPanel(mainFrame));
             mainFrame.revalidate();
         });
 

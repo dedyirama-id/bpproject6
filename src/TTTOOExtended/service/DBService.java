@@ -13,6 +13,7 @@ import java.util.List;
  */
 public class DBService {
     private static final String URL = "jdbc:mysql://ttt-user:ttt-password@test-db-flo-w.f.aivencloud.com:25414/ttt_db?ssl-mode=REQUIRED";
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DBService.class.getName());
 
     // Returns a connection to the database
     public static Connection getConnection() throws SQLException {
@@ -47,7 +48,7 @@ public class DBService {
                 return new User(id, uname);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.severe("Login failed: " + e.getMessage());
         }
 
         return null;
@@ -62,7 +63,7 @@ public class DBService {
             ps.setString(3, finalState);
             ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.severe("Failed to save game: " + e.getMessage());
         }
     }
 
@@ -84,7 +85,7 @@ public class DBService {
                 historyList.add(history);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.severe("Failed to load game history: " + e.getMessage());
         }
         return historyList;
     }

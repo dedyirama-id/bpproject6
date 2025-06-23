@@ -74,7 +74,7 @@ public class LoginPanel extends JPanel {
         add(backButton, gbc);
 
         // Login action
-        loginButton.addActionListener(e -> {
+        loginButton.addActionListener(_ -> {
             String username = usernameField.getText().trim();
             String password = new String(passwordField.getPassword());
 
@@ -94,6 +94,6 @@ public class LoginPanel extends JPanel {
         });
 
         // Back action
-        backButton.addActionListener(e -> cardLayout.show(mainPanel, "Welcome"));
+        backButton.addActionListener(_ -> cardLayout.show(mainPanel, "Welcome"));
     }
 }

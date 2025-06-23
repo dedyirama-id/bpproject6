@@ -2,10 +2,7 @@ package TTTOOExtended;
 
 import TTTOOExtended.model.Session;
 import TTTOOExtended.model.User;
-import TTTOOExtended.panel.LoginPanel;
-import TTTOOExtended.panel.MainMenuPanel;
-import TTTOOExtended.panel.RegisterPanel;
-import TTTOOExtended.panel.WelcomePanel;
+import TTTOOExtended.panel.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,9 +12,9 @@ import java.awt.*;
  * It manages different screens using a CardLayout and displays the current user's info.
  */
 public class MainFrame extends JFrame {
-    private CardLayout cardLayout;
-    private JPanel mainPanel;
-    private JLabel userInfoLabel;
+    private final CardLayout cardLayout;
+    private final JPanel mainPanel;
+    private final JLabel userInfoLabel;
 
     public MainFrame() {
         // Frame configuration
@@ -43,8 +40,9 @@ public class MainFrame extends JFrame {
         mainPanel.add(new WelcomePanel(cardLayout, mainPanel), "Welcome");
         mainPanel.add(new RegisterPanel(cardLayout, mainPanel), "Register");
         mainPanel.add(new LoginPanel(cardLayout, mainPanel, this), "Login");
-        mainPanel.add(new MainMenuPanel(cardLayout, mainPanel, this), "MainMenu");
+        mainPanel.add(new MainMenuPanel(this), "MainMenu");
         mainPanel.add(new GameMain(this), "Game");
+        mainPanel.add(new HistoryPanel(this), "History");
 
         // Add main panel to the center of the frame
         add(mainPanel, BorderLayout.CENTER);

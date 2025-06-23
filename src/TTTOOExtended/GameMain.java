@@ -11,31 +11,16 @@ import java.awt.event.MouseEvent;
  */
 public class GameMain extends JPanel {
     private Board board;
-    private DrawCanvas canvas;
-    private JLabel statusBar;
+    private final DrawCanvas canvas;
+    private final JLabel statusBar;
     private JLabel savingLabel;
     private volatile boolean isSavingInProgress = false;
 
     public GameMain(MainFrame mainFrame) {
         setLayout(new BorderLayout());
 
-        // Header panel (Back and Reset buttons)
-        JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton backButton = new JButton("Back");
-        JButton resetButton = new JButton("Reset");
-
-        backButton.addActionListener(e -> mainFrame.getCardLayout().show(mainFrame.getMainPanel(), "MainMenu"));
-
-        resetButton.addActionListener(e -> {
-            if (isSavingInProgress) return;
-            board.initGame();
-            SoundEffect.initGame();
-            savingLabel.setText("");
-            repaint();
-        });
-
-        headerPanel.add(backButton);
-        headerPanel.add(resetButton);
+        // Header panel
+        JPanel headerPanel = getHeaderPanel(mainFrame);
         add(headerPanel, BorderLayout.NORTH);
 
         // Game canvas (center)
@@ -117,6 +102,27 @@ public class GameMain extends JPanel {
         };
 
         SoundEffect.initGame();
+    }
+
+    // Create header panel
+    private JPanel getHeaderPanel(MainFrame mainFrame) {
+        JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JButton backButton = new JButton("Back");
+        JButton resetButton = new JButton("Reset");
+
+        backButton.addActionListener(_ -> mainFrame.getCardLayout().show(mainFrame.getMainPanel(), "MainMenu"));
+
+        resetButton.addActionListener(_ -> {
+            if (isSavingInProgress) return;
+            board.initGame();
+            SoundEffect.initGame();
+            savingLabel.setText("");
+            repaint();
+        });
+
+        headerPanel.add(backButton);
+        headerPanel.add(resetButton);
+        return headerPanel;
     }
 
     // Display saving message immediately when game ends

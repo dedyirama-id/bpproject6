@@ -72,7 +72,7 @@ public class RegisterPanel extends JPanel {
         add(backButton, gbc);
 
         // Register event handler
-        registerButton.addActionListener(e -> {
+        registerButton.addActionListener(_ -> {
             String username = usernameField.getText().trim();
             String password = new String(passwordField.getPassword());
 
@@ -93,6 +93,6 @@ public class RegisterPanel extends JPanel {
         });
 
         // Back button event
-        backButton.addActionListener(e -> cardLayout.show(mainPanel, "Welcome"));
+        backButton.addActionListener(_ -> cardLayout.show(mainPanel, "Welcome"));
     }
 }

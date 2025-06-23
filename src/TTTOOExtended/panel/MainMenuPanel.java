@@ -1,6 +1,5 @@
 package TTTOOExtended.panel;
 
-import TTTOOExtended.GameMain;
 import TTTOOExtended.MainFrame;
 
 import javax.swing.*;
@@ -10,10 +9,8 @@ import java.awt.*;
  * MainMenuPanel displays the main menu options: History, Start, and Exit.
  */
 public class MainMenuPanel extends JPanel {
-    private MainFrame mainFrame;
 
-    public MainMenuPanel(CardLayout cardLayout, JPanel mainPanel, MainFrame mainFrame) {
-        this.mainFrame = mainFrame;
+    public MainMenuPanel(final MainFrame mainFrame) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(BorderFactory.createEmptyBorder(30, 80, 30, 80));
 
@@ -41,15 +38,9 @@ public class MainMenuPanel extends JPanel {
         add(Box.createVerticalGlue());
 
         // Actions
-        historyButton.addActionListener(e -> {
-            mainFrame.setContentPane(new HistoryPanel(mainFrame));
-            mainFrame.revalidate();
-        });
+        historyButton.addActionListener(_ -> mainFrame.getCardLayout().show(mainFrame.getMainPanel(), "History"));
 
-        startButton.addActionListener(e -> {
-            mainFrame.setContentPane(new GameMain(mainFrame));
-            mainFrame.revalidate();
-        });
+        startButton.addActionListener(_ -> mainFrame.getCardLayout().show(mainFrame.getMainPanel(), "Game"));
 
         exitButton.addActionListener(_ -> System.exit(0));
     }

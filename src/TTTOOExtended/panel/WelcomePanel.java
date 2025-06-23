@@ -31,7 +31,7 @@ public class WelcomePanel extends JPanel {
         add(Box.createVerticalGlue());
 
         // Navigation logic
-        registerButton.addActionListener(e -> cardLayout.show(mainPanel, "Register"));
-        loginButton.addActionListener(e -> cardLayout.show(mainPanel, "Login"));
+        registerButton.addActionListener(_ -> cardLayout.show(mainPanel, "Register"));
+        loginButton.addActionListener(_ -> cardLayout.show(mainPanel, "Login"));
     }
 }
