@@ -15,6 +15,9 @@ import java.util.List;
  * It manages different screens using a CardLayout and displays the current user's info.
  */
 public class MainFrame extends JFrame {
+    public boolean isVsAI = true;
+    public String aiLevel = "hard";
+
     private final CardLayout cardLayout;
     private final JPanel mainPanel;
     private final JLabel userInfoLabel;

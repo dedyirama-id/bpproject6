@@ -2,7 +2,6 @@ package TTTOOExtended;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -19,6 +18,9 @@ public class GameMain extends JPanel {
 
     public GameMain(MainFrame mainFrame) {
         setLayout(new BorderLayout());
+        this.isVsAI = mainFrame.isVsAI;
+        this.aiLevel = mainFrame.aiLevel;
+
 
         // Header panel
         JPanel headerPanel = getHeaderPanel(mainFrame);
@@ -160,8 +162,8 @@ public class GameMain extends JPanel {
         }
     }
     // AI CONFIG
-    private final boolean isVsAI = true; // true = mode AI, false = PvP
-    private final String aiLevel = "hard"; // "easy", "medium", "hard"
+    private boolean isVsAI = true; // true = mode AI, false = PvP
+    private String aiLevel = "hard"; // "easy", "medium", "hard"
 
     // AI LOGIC
     private void aiMove() {

@@ -4,8 +4,8 @@ import TTTOOExtended.MainFrame;
 import TTTOOExtended.model.Session;
 
 import javax.swing.*;
-import java.awt.event.ActionListener;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 /**
  * MainMenuPanel displays the main menu options: History, Start, and Exit.
@@ -19,9 +19,18 @@ public class MainMenuPanel extends JPanel {
         // Buttons
         JButton historyButton = new JButton("📅 History");
         JButton startButton = new JButton("🚀 Start!");
+        JButton aiButton = new JButton("🤖 Play vs AI");
         JButton exitButton = new JButton("🚫 Exit");
 
+        JComboBox<String> aiLevelSelector = new JComboBox<>(new String[] {
+                "easy", "medium", "hard"
+        });
         Dimension buttonSize = new Dimension(200, 60);
+        aiLevelSelector.setMaximumSize(buttonSize);
+        aiLevelSelector.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+
+        buttonSize = new Dimension(200, 60);
         historyButton.setMaximumSize(buttonSize);
         startButton.setMaximumSize(buttonSize);
         exitButton.setMaximumSize(buttonSize);
@@ -37,7 +46,12 @@ public class MainMenuPanel extends JPanel {
         add(startButton);
         add(Box.createVerticalStrut(15));
         add(exitButton);
+        add(Box.createVerticalStrut(15));
+        add(aiButton);
         add(Box.createVerticalGlue());
+        add(Box.createVerticalStrut(10));
+        add(aiLevelSelector);
+
 
         // Actions
         historyButton.addActionListener(_ -> {
@@ -53,7 +67,11 @@ public class MainMenuPanel extends JPanel {
         startButton.addActionListener(_ -> mainFrame.getCardLayout().show(mainFrame.getMainPanel(), "Game"));
 
         exitButton.addActionListener(_ -> System.exit(0));
-    }
+
+        aiButton.addActionListener(_ -> {
+            mainFrame.isVsAI = true;
+            mainFrame.getCardLayout().show(mainFrame.getMainPanel(), "Game");
+    });
 }
 
 class GameModePanel extends JPanel {
@@ -76,5 +94,6 @@ class GameModePanel extends JPanel {
         add(btnPvAI);
         add(btnRestart);
     }
+}
 }
 
