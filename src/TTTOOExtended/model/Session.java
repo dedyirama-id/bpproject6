@@ -7,23 +7,44 @@ package TTTOOExtended.model;
 public class Session {
     private static User currentUser;
 
-    // Sets the current user
+    private static String customStartSoundPath;
+    private static String customMoveSoundPath;
+    private static String customEndSoundPath;
+
+    public static void setCustomStartSoundPath(String path) {
+        customStartSoundPath = path;
+    }
+
+    public static void setCustomMoveSoundPath(String path) {
+        customMoveSoundPath = path;
+    }
+
+    public static void setCustomEndSoundPath(String path) {
+        customEndSoundPath = path;
+    }
+
+    public static String getCustomStartSoundPath() {
+        return customStartSoundPath;
+    }
+
+    public static String getCustomMoveSoundPath() {
+        return customMoveSoundPath;
+    }
+
+    public static String getCustomEndSoundPath() {
+        return customEndSoundPath;
+    }
+
+
     public static void setUser(User user) {
         currentUser = user;
     }
 
-    // Retrieves the current user
     public static User getUser() {
         return currentUser;
     }
 
-    // Retrieves the ID of the current user
     public static int getCurrentUserId() {
         return currentUser.getId();
-    }
-
-    // Clears the current session
-    public static void clear() {
-        currentUser = null;
     }
 }
