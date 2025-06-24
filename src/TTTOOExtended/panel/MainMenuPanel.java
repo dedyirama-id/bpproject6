@@ -4,6 +4,7 @@ import TTTOOExtended.MainFrame;
 import TTTOOExtended.model.Session;
 
 import javax.swing.*;
+import java.awt.event.ActionListener;
 import java.awt.*;
 
 /**
@@ -52,5 +53,27 @@ public class MainMenuPanel extends JPanel {
         startButton.addActionListener(_ -> mainFrame.getCardLayout().show(mainFrame.getMainPanel(), "Game"));
 
         exitButton.addActionListener(_ -> System.exit(0));
+    }
+}
+
+class GameModePanel extends JPanel {
+    public JButton btnPvP;
+    public JButton btnPvAI;
+    public JButton btnRestart;
+
+    public GameModePanel(ActionListener listener) {
+        setLayout(new FlowLayout(FlowLayout.CENTER));
+
+        btnPvP = new JButton("Player vs Player");
+        btnPvAI = new JButton("Player vs AI");
+        btnRestart = new JButton("Restart");
+
+        btnPvP.addActionListener(listener);
+        btnPvAI.addActionListener(listener);
+        btnRestart.addActionListener(listener);
+
+        add(btnPvP);
+        add(btnPvAI);
+        add(btnRestart);
     }
 }
