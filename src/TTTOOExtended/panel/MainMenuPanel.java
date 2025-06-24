@@ -77,3 +77,4 @@ class GameModePanel extends JPanel {
         add(btnRestart);
     }
 }
+
