@@ -28,6 +28,9 @@ public class TTTSimpleOO extends JFrame {
     public static final Color COLOR_NOUGHT = new Color(76, 181, 245);
     public static final Font FONT_STATUS = new Font("OCR A Extended", Font.PLAIN, 14);
 
+    private Image iconCross = null;
+    private Image iconNought = null;
+
     public enum State {
         PLAYING, DRAW, CROSS_WON, NOUGHT_WON
     }
@@ -93,7 +96,19 @@ public class TTTSimpleOO extends JFrame {
 
         Container cp = getContentPane();
         cp.setLayout(new BorderLayout());
-        cp.add(resetBtn, BorderLayout.PAGE_START);
+        JButton iconBtn = new JButton("Custom Icon");
+        iconBtn.setFocusable(false);
+        iconBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                loadCustomIcons();
+            }
+        });
+
+        JPanel topPanel = new JPanel(new FlowLayout());
+        topPanel.add(resetBtn);
+        topPanel.add(iconBtn);
+        cp.add(topPanel, BorderLayout.PAGE_START);
         cp.add(gamePanel, BorderLayout.CENTER);
         cp.add(statusBar, BorderLayout.PAGE_END);
 
@@ -121,6 +136,23 @@ public class TTTSimpleOO extends JFrame {
         }
         currentPlayer = Seed.CROSS;
         currentState = State.PLAYING;
+    }
+
+    private void loadCustomIcons() {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Choose Icon for X (Cross)");
+        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            iconCross = new ImageIcon(chooser.getSelectedFile().getAbsolutePath())
+                    .getImage().getScaledInstance(SYMBOL_SIZE, SYMBOL_SIZE, Image.SCALE_SMOOTH);
+        }
+
+        chooser.setDialogTitle("Choose Icon for O (Nought)");
+        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            iconNought = new ImageIcon(chooser.getSelectedFile().getAbsolutePath())
+                    .getImage().getScaledInstance(SYMBOL_SIZE, SYMBOL_SIZE, Image.SCALE_SMOOTH);
+        }
+
+        repaint(); // refresh tampilan game
     }
 
     public State stepGame(Seed player, int selectedRow, int selectedCol) {
@@ -169,14 +201,22 @@ public class TTTSimpleOO extends JFrame {
                     int x1 = col * CELL_SIZE + CELL_PADDING;
                     int y1 = row * CELL_SIZE + CELL_PADDING;
                     if (board[row][col] == Seed.CROSS) {
-                        g2d.setColor(COLOR_CROSS);
-                        int x2 = (col + 1) * CELL_SIZE - CELL_PADDING;
-                        int y2 = (row + 1) * CELL_SIZE - CELL_PADDING;
-                        g2d.drawLine(x1, y1, x2, y2);
-                        g2d.drawLine(x2, y1, x1, y2);
+                        if (iconCross != null) {
+                            g2d.drawImage(iconCross, x1, y1, SYMBOL_SIZE, SYMBOL_SIZE, this);
+                        } else {
+                            g2d.setColor(COLOR_CROSS);
+                            int x2 = (col + 1) * CELL_SIZE - CELL_PADDING;
+                            int y2 = (row + 1) * CELL_SIZE - CELL_PADDING;
+                            g2d.drawLine(x1, y1, x2, y2);
+                            g2d.drawLine(x2, y1, x1, y2);
+                        }
                     } else if (board[row][col] == Seed.NOUGHT) {
-                        g2d.setColor(COLOR_NOUGHT);
-                        g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
+                        if (iconNought != null) {
+                            g2d.drawImage(iconNought, x1, y1, SYMBOL_SIZE, SYMBOL_SIZE, this);
+                        } else {
+                            g2d.setColor(COLOR_NOUGHT);
+                            g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
+                        }
                     }
                 }
             }
