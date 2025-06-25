@@ -8,7 +8,6 @@ import TTTOOExtended.service.DBService;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 /**
  * MainFrame serves as the primary window for the Tic Tac Toe application.
@@ -62,7 +61,6 @@ public class MainFrame extends JFrame {
         cardLayout.show(mainPanel, "Welcome");
     }
 
-
     // Updates the user info label at the top of the screen
     public void updateUserInfoLabel() {
         User user = Session.getUser();
@@ -80,7 +78,7 @@ public class MainFrame extends JFrame {
 
     // Show history panel
     public void showHistoryPanelForUser(int userId) {
-        List<GameHistory> histories = DBService.getGameHistoriesByUserId(userId);
+        GameHistory[] histories = DBService.getGameHistoriesByUserId(userId);
         HistoryPanel historyPanel = new HistoryPanel(this, histories);
 
         mainPanel.add(historyPanel, "History");

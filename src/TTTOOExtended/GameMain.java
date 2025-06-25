@@ -1,5 +1,7 @@
 package TTTOOExtended;
 
+import TTTOOExtended.utils.CustomSoundPlayer;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -25,7 +27,6 @@ public class GameMain extends JPanel {
         this.aiLevel = mainFrame.aiLevel;
         this.playerSeed = playerSeed;
 
-
         // Header panel
         JPanel headerPanel = getHeaderPanel(mainFrame);
         add(headerPanel, BorderLayout.NORTH);
@@ -50,12 +51,11 @@ public class GameMain extends JPanel {
                             colSelected >= 0 && colSelected < Board.COLS &&
                             board.cells[rowSelected][colSelected].content == Seed.NO_SEED) {
 
-                        if (isVsAI && board.currentPlayer != playerSeed) return;
                         board.cells[rowSelected][colSelected].content = board.currentPlayer;
                         board.updateGame(board.currentPlayer, rowSelected, colSelected);
 
                         if (board.currentState == State.PLAYING) {
-                            SoundEffect.EAT_FOOD.play();
+                            CustomSoundPlayer.playMoveSound();
                             board.currentPlayer = (board.currentPlayer == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
 
                             if (isVsAI && board.currentPlayer != playerSeed && board.currentState == State.PLAYING) {
@@ -67,19 +67,14 @@ public class GameMain extends JPanel {
                             }
 
                         } else {
-                            SoundEffect.DIE.play();
+                            CustomSoundPlayer.playEndSound();
                             showSavingStatus();
                         }
                     }
                 } else if (!isSavingInProgress) {
                     board.initGame();
-
-                    if (isVsAI && playerSeed == Seed.NOUGHT) {
-                        board.currentPlayer = Seed.CROSS;  // AI jalan dulu
-                        aiMove();                          // AI langsung main
-                    }
-
                     SoundEffect.initGame();
+                    CustomSoundPlayer.playStartSound();
                     savingLabel.setText("");
                 }
 
@@ -148,10 +143,10 @@ public class GameMain extends JPanel {
 
         resetButton.addActionListener(_ -> {
             if (isSavingInProgress) return;
-
             board.initGame();
             board.currentPlayer = playerSeed;
             SoundEffect.initGame();
+            CustomSoundPlayer.playStartSound();
             savingLabel.setText("");
             repaint();
 
@@ -216,10 +211,10 @@ public class GameMain extends JPanel {
             board.updateGame(board.currentPlayer, move[0], move[1]);
 
             if (board.currentState == State.PLAYING) {
-                SoundEffect.EAT_FOOD.play();
+                SoundEffect.MOVE.play();
                 board.currentPlayer = (board.currentPlayer == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
             } else {
-                SoundEffect.DIE.play();
+                SoundEffect.END.play();
                 showSavingStatus();
             }
             repaint();

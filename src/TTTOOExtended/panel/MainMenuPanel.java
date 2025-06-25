@@ -19,6 +19,8 @@ public class MainMenuPanel extends JPanel {
 
         // Buttons
         JButton historyButton = new JButton("📅 History");
+        JButton customSoundButton = new JButton("🎵 Custom Sound");
+        JButton customIconButton = new JButton("🎨 Custom Icon");
         JButton startButton = new JButton("🚀 Play vs Player!");
         JButton aiButton = new JButton("🤖 Play vs AI");
         JButton exitButton = new JButton("🚫 Exit");
@@ -33,19 +35,27 @@ public class MainMenuPanel extends JPanel {
 
         buttonSize = new Dimension(200, 60);
         historyButton.setMaximumSize(buttonSize);
+        customSoundButton.setMaximumSize(buttonSize);
+        customIconButton.setMaximumSize(buttonSize);
         startButton.setMaximumSize(buttonSize);
         aiButton.setMaximumSize(buttonSize);
         exitButton.setMaximumSize(buttonSize);
 
         historyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        customSoundButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         aiButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        customIconButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Layout
         add(Box.createVerticalGlue());
         add(historyButton);
-        add(Box.createVerticalStrut(16));
+        add(Box.createVerticalStrut(15));
+        add(customSoundButton);
+        add(Box.createVerticalStrut(15));
+        add(customIconButton);
+        add(Box.createVerticalStrut(15));
         add(startButton);
         add(Box.createVerticalStrut(16));
         add(aiButton);
@@ -53,8 +63,11 @@ public class MainMenuPanel extends JPanel {
         add(exitButton);
         add(Box.createVerticalGlue());
 
-
         // Actions
+        customIconButton.addActionListener(_ -> {
+            mainFrame.getMainPanel().add(new CustomIconPanel(mainFrame), "CustomIcon");
+            mainFrame.getCardLayout().show(mainFrame.getMainPanel(), "CustomIcon");
+        });
         historyButton.addActionListener(_ -> {
             var user = Session.getUser();
             if (user == null) {
@@ -63,6 +76,11 @@ public class MainMenuPanel extends JPanel {
             }
 
             mainFrame.showHistoryPanelForUser(user.getId());
+        });
+
+        customSoundButton.addActionListener(_ -> {
+            mainFrame.getMainPanel().add(new CustomSoundEffectPanel(mainFrame), "CustomSound");
+            mainFrame.getCardLayout().show(mainFrame.getMainPanel(), "CustomSound");
         });
 
         String[] selectedChar = new String[1];
@@ -109,7 +127,6 @@ public class MainMenuPanel extends JPanel {
         aiButton.addActionListener(_ -> {
             mainFrame.startGame(true, "hard", selectedChar[0]);
         });
-
     }
 
     class GameModePanel extends JPanel {
@@ -134,5 +151,3 @@ public class MainMenuPanel extends JPanel {
         }
     }
 }
-
-
