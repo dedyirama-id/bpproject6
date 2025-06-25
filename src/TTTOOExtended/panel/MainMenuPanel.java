@@ -18,6 +18,7 @@ public class MainMenuPanel extends JPanel {
         // Buttons
         JButton historyButton = new JButton("📅 History");
         JButton customSoundButton = new JButton("🎵 Custom Sound");
+        JButton customIconButton = new JButton("🎨 Custom Icon");
         JButton startButton = new JButton("🚀 Start!");
         JButton exitButton = new JButton("🚫 Exit");
 
@@ -38,10 +39,19 @@ public class MainMenuPanel extends JPanel {
         add(Box.createVerticalStrut(15));
         add(customSoundButton);
         add(Box.createVerticalStrut(15));
+        add(customIconButton);
+        add(Box.createVerticalStrut(15));
         add(startButton);
         add(Box.createVerticalStrut(15));
         add(exitButton);
         add(Box.createVerticalGlue());
+
+        customIconButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        customIconButton.addActionListener(_ -> {
+            mainFrame.getMainPanel().add(new CustomIconPanel(mainFrame), "CustomIcon");
+            mainFrame.getCardLayout().show(mainFrame.getMainPanel(), "CustomIcon");
+        });
+
 
         // Actions
         historyButton.addActionListener(_ -> {
