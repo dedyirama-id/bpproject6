@@ -7,16 +7,24 @@ import java.util.Scanner;
  */
 public class GameMain {
     // Define properties
-    /** The game board */
+    /**
+     * The game board
+     */
     private Board board;
-    /** The current state of the game (of enum State) */
+    /**
+     * The current state of the game (of enum State)
+     */
     private State currentState;
-    /** The current player (of enum Seed) */
-    private Seed  currentPlayer;
+    /**
+     * The current player (of enum Seed)
+     */
+    private Seed currentPlayer;
 
     private static Scanner in = new Scanner(System.in);
 
-    /** Constructor to setup the game */
+    /**
+     * Constructor to setup the game
+     */
     public GameMain() {
         // Perform one-time initialization tasks
         initGame();
@@ -44,20 +52,26 @@ public class GameMain {
         } while (currentState == State.PLAYING);  // repeat until game over
     }
 
-    /** Perform one-time initialization tasks */
+    /**
+     * Perform one-time initialization tasks
+     */
     public void initGame() {
         board = new Board();  // allocate game-board
     }
 
-    /** Reset the game-board contents and the current states, ready for new game */
+    /**
+     * Reset the game-board contents and the current states, ready for new game
+     */
     public void newGame() {
         board.newGame();  // clear the board contents
         currentPlayer = Seed.CROSS;   // CROSS plays first
         currentState = State.PLAYING; // ready to play
     }
 
-    /** The currentPlayer makes one move.
-     Update cells[][] and currentState. */
+    /**
+     * The currentPlayer makes one move.
+     * Update cells[][] and currentState.
+     */
     public void stepGame() {
         boolean validInput = false;  // for validating input
         do {
@@ -77,8 +91,10 @@ public class GameMain {
         } while (!validInput);   // repeat until input is valid
     }
 
-    /** The entry main() method */
+    /**
+     * The entry main() method
+     */
     public static void main(String[] args) {
         new GameMain();  // Let the constructor do the job
     }
-}
+    }
