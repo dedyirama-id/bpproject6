@@ -39,7 +39,8 @@ public class CustomIconPanel extends JPanel {
                 iconX = new ImageIcon(file.getAbsolutePath());
                 xIconLabel.setIcon(new ImageIcon(iconX.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
                 xIconLabel.setText("X Icon Selected");
-                // TODO: Simpan iconX di Session atau GameConfig
+
+                TTTOOExtended.model.GameConfig.setCustomIconX(iconX);
             }
         });
 
@@ -49,7 +50,8 @@ public class CustomIconPanel extends JPanel {
                 iconO = new ImageIcon(file.getAbsolutePath());
                 oIconLabel.setIcon(new ImageIcon(iconO.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
                 oIconLabel.setText("O Icon Selected");
-                // TODO: Simpan iconO di Session atau GameConfig
+
+                TTTOOExtended.model.GameConfig.setCustomIconO(iconO);
             }
         });
 
