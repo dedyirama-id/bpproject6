@@ -32,10 +32,10 @@ public class GameMain extends JFrame {
                         board.updateGame(board.currentPlayer, rowSelected, colSelected);
 
                         if (board.currentState == State.PLAYING) {
-                            SoundEffect.EAT_FOOD.play();
+                            SoundEffect.MOVE.play();
                             board.currentPlayer = (board.currentPlayer == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
                         } else {
-                            SoundEffect.DIE.play();
+                            SoundEffect.END.play();
                         }
                     }
                 } else {
