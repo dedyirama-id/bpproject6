@@ -43,7 +43,7 @@ public class CustomSoundPlayer {
             startClip = loadClipOnce(path, startClip);
             playClip(startClip);
         } else {
-            SoundEffect.EXPLODE.play();
+            SoundEffect.START.play();
         }
     }
 
@@ -53,7 +53,7 @@ public class CustomSoundPlayer {
             moveClip = loadClipOnce(path, moveClip);
             playClip(moveClip);
         } else {
-            SoundEffect.EAT_FOOD.play();
+            SoundEffect.MOVE.play();
         }
     }
 
@@ -63,7 +63,7 @@ public class CustomSoundPlayer {
             endClip = loadClipOnce(path, endClip);
             playClip(endClip);
         } else {
-            SoundEffect.DIE.play();
+            SoundEffect.END.play();
         }
     }
 }

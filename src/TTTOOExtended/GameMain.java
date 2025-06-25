@@ -193,10 +193,10 @@ public class GameMain extends JPanel {
             board.updateGame(board.currentPlayer, move[0], move[1]);
 
             if (board.currentState == State.PLAYING) {
-                SoundEffect.EAT_FOOD.play();
+                SoundEffect.MOVE.play();
                 board.currentPlayer = (board.currentPlayer == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
             } else {
-                SoundEffect.DIE.play();
+                SoundEffect.END.play();
                 showSavingStatus();
             }
             repaint();

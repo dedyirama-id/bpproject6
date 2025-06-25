@@ -15,9 +15,9 @@ import java.net.URL;
  * For Eclipse, place the audio file under "src", which will be copied into "bin".
  */
 public enum SoundEffect {
-    EAT_FOOD("audio/eatfood.wav"),
-    EXPLODE("audio/explode.wav"),
-    DIE("audio/die.wav");
+    MOVE("audio/move.wav"),
+    START("audio/start.wav"),
+    END("audio/end.wav");
 
     /** Nested enumeration for specifying volume */
     public static enum Volume {
