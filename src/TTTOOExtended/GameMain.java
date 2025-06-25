@@ -59,7 +59,11 @@ public class GameMain extends JPanel {
                             board.currentPlayer = (board.currentPlayer == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
 
                             if (isVsAI && board.currentPlayer != playerSeed && board.currentState == State.PLAYING) {
-                                SwingUtilities.invokeLater(() -> aiMove());
+                                new javax.swing.Timer(500, evt -> {
+                                    aiMove();
+                                    ((javax.swing.Timer) evt.getSource()).stop();
+                                }).start();
+
                             }
 
                         } else {
@@ -115,6 +119,17 @@ public class GameMain extends JPanel {
             }
         };
 
+        board.initGame();
+        board.currentPlayer = this.playerSeed;
+
+        if (isVsAI && playerSeed == Seed.NOUGHT) {
+            board.currentPlayer = Seed.CROSS;
+            new javax.swing.Timer(500, evt -> {
+                aiMove();
+                ((javax.swing.Timer) evt.getSource()).stop();
+            }).start();
+        }
+
         SoundEffect.initGame();
     }
 
@@ -137,7 +152,10 @@ public class GameMain extends JPanel {
 
             if (isVsAI && playerSeed == Seed.NOUGHT) {
                 board.currentPlayer = Seed.CROSS;
-                SwingUtilities.invokeLater(() -> aiMove());
+                new javax.swing.Timer(500, evt -> {
+                    aiMove();
+                    ((javax.swing.Timer) evt.getSource()).stop();
+                }).start();
             }
         });
 
