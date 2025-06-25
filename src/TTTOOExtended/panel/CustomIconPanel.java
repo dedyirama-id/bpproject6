@@ -1,6 +1,8 @@
 package TTTOOExtended.panel;
 
 import TTTOOExtended.MainFrame;
+import TTTOOExtended.model.GameConfig;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -39,6 +41,7 @@ public class CustomIconPanel extends JPanel {
                 xIconLabel.setIcon(new ImageIcon(iconX.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
                 xIconLabel.setText("X Icon Selected");
                 // TODO: Simpan iconX di Session atau GameConfig
+                GameConfig.setCustomIconX(iconX);
             }
         });
 
@@ -49,11 +52,13 @@ public class CustomIconPanel extends JPanel {
                 oIconLabel.setIcon(new ImageIcon(iconO.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH)));
                 oIconLabel.setText("O Icon Selected");
                 // TODO: Simpan iconO di Session atau GameConfig
+                GameConfig.setCustomIconO(iconO);
             }
         });
 
         backButton.addActionListener(_ -> {
             mainFrame.getCardLayout().show(mainFrame.getMainPanel(), "MainMenu");
+            mainFrame.getMainPanel().repaint();
         });
 
         add(titleLabel);

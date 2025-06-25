@@ -1,5 +1,7 @@
 package TTTOOExtended;
 
+import TTTOOExtended.model.GameConfig;
+
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
@@ -22,24 +24,24 @@ public enum Seed {   // to save as "Seed.java"
     NO_SEED(" ", null);
 
     // Private variables
-    private String displayName;
-    private Image img = null;
+    private final String displayName;
+    private final Image defaultImg;
 
     // Constructor (must be private)
     private Seed(String name, String imageFilename) {
         this.displayName = name;
+        Image tempImg = null;
 
         if (imageFilename != null) {
             URL imgURL = getClass().getClassLoader().getResource(imageFilename);
-            ImageIcon icon = null;
             if (imgURL != null) {
-                icon = new ImageIcon(imgURL);
+                tempImg = new ImageIcon(imgURL).getImage();
                 //System.out.println(icon);  // debugging
             } else {
                 System.err.println("Couldn't find file " + imageFilename);
             }
-            img = icon.getImage();
         }
+        this.defaultImg = tempImg;
     }
 
     // Public getters
@@ -47,6 +49,13 @@ public enum Seed {   // to save as "Seed.java"
         return displayName;
     }
     public Image getImage() {
-        return img;
+        if (this == CROSS) {
+            ImageIcon custom = GameConfig.getCustomIconX();
+            return (custom != null) ? custom.getImage() : defaultImg;
+        } else if (this == NOUGHT) {
+            ImageIcon custom = GameConfig.getCustomIconO();
+            return (custom != null) ? custom.getImage() : defaultImg;
+        }
+        return null;
     }
 }
