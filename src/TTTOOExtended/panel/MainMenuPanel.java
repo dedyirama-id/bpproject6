@@ -96,18 +96,18 @@ public class MainMenuPanel extends JPanel {
             );
 
             if (selected != null) {
-                mainFrame.startGame(true, Arrays.toString(selectedChar), selected);  // ✅ semua aman
+                mainFrame.startGame(true, Arrays.toString(selectedChar), selected);
             }
 
-            if (selected != null) mainFrame.startGame(true, selected, selectedChar[0]);  // mulai game vs AI
+            if (selected != null) mainFrame.startGame(true, selected, selectedChar[0]);
         });
 
         startButton.addActionListener(_ -> {
-            mainFrame.startGame(false, "normal", selectedChar[0]);  // 👥 vs player → no AI
+            mainFrame.startGame(false, "normal", selectedChar[0]);
         });
 
         aiButton.addActionListener(_ -> {
-            mainFrame.startGame(true, "hard", selectedChar[0]);  // 🤖 vs AI → pakai AI default hard
+            mainFrame.startGame(true, "hard", selectedChar[0]);
         });
 
     }
