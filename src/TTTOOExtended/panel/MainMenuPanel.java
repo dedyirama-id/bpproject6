@@ -19,6 +19,8 @@ public class MainMenuPanel extends JPanel {
 
         // Buttons
         JButton historyButton = new JButton("📅 History");
+        JButton customSoundButton = new JButton("🎵 Custom Sound");
+        JButton customIconButton = new JButton("🎨 Custom Icon");
         JButton startButton = new JButton("🚀 Play vs Player!");
         JButton aiButton = new JButton("🤖 Play vs AI");
         JButton exitButton = new JButton("🚫 Exit");
@@ -41,10 +43,15 @@ public class MainMenuPanel extends JPanel {
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         aiButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        customIconButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Layout
         add(Box.createVerticalGlue());
         add(historyButton);
+        add(Box.createVerticalStrut(15));
+        add(customSoundButton);
+        add(Box.createVerticalStrut(15));
+        add(customIconButton);
         add(Box.createVerticalStrut(15));
         add(startButton);
         add(Box.createVerticalStrut(15));
@@ -53,8 +60,11 @@ public class MainMenuPanel extends JPanel {
         add(exitButton);
         add(Box.createVerticalGlue());
 
-
         // Actions
+        customIconButton.addActionListener(_ -> {
+            mainFrame.getMainPanel().add(new CustomIconPanel(mainFrame), "CustomIcon");
+            mainFrame.getCardLayout().show(mainFrame.getMainPanel(), "CustomIcon");
+        });
         historyButton.addActionListener(_ -> {
             var user = Session.getUser();
             if (user == null) {
