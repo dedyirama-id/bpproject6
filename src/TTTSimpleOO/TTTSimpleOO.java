@@ -51,7 +51,7 @@ public class TTTSimpleOO extends JFrame {
 
     public TTTSimpleOO() {
         initGame();
-        gamePanel = null;
+        GamePanel gamePanel = new GamePanel();
         gamePanel.setPreferredSize(new Dimension(BOARD_WIDTH, BOARD_HEIGHT));
 
         gamePanel.addMouseListener(new MouseAdapter() {
