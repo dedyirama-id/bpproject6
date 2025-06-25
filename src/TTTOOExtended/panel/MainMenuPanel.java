@@ -85,7 +85,6 @@ public class MainMenuPanel extends JPanel {
 
         String[] selectedChar = new String[1];
         aiButton.addActionListener(_ -> {
-            // Step 1: Pilih karakter
             selectedChar[0] = "X";
 
             String[] chars = {"X", "O"};
@@ -101,7 +100,6 @@ public class MainMenuPanel extends JPanel {
 
             if (selectedChar == null) return;
 
-            // Step 2: Pilih difficulty
             String[] options = {"easy", "medium", "hard"};
             String selected = (String) JOptionPane.showInputDialog(
                     this,
@@ -127,6 +125,8 @@ public class MainMenuPanel extends JPanel {
         aiButton.addActionListener(_ -> {
             mainFrame.startGame(true, "hard", selectedChar[0]);
         });
+
+        exitButton.addActionListener(_ -> System.exit(0));
     }
 
     class GameModePanel extends JPanel {
