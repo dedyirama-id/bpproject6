@@ -18,6 +18,7 @@ public class MainFrame extends JFrame {
     public boolean isVsAI = true;
     public String aiLevel = "hard";
 
+    private GameMain gamePanel = null;
     private final CardLayout cardLayout;
     private final JPanel mainPanel;
     private final JLabel userInfoLabel;
@@ -47,7 +48,7 @@ public class MainFrame extends JFrame {
         mainPanel.add(new RegisterPanel(cardLayout, mainPanel), "Register");
         mainPanel.add(new LoginPanel(cardLayout, mainPanel, this), "Login");
         mainPanel.add(new MainMenuPanel(this), "MainMenu");
-        mainPanel.add(new GameMain(this), "Game");
+        mainPanel.add(new GameMain(this, isVsAI, aiLevel), "Game");
 
         // Add main panel to the center of the frame
         add(mainPanel, BorderLayout.CENTER);
@@ -56,6 +57,8 @@ public class MainFrame extends JFrame {
         setVisible(true);
         cardLayout.show(mainPanel, "Welcome");
     }
+
+
 
     // Updates the user info label at the top of the screen
     public void updateUserInfoLabel() {
@@ -88,5 +91,14 @@ public class MainFrame extends JFrame {
 
     public JPanel getMainPanel() {
         return mainPanel;
+    }
+
+    public void startGame(boolean isVsAI, String aiLevel) {
+        if (gamePanel != null) {
+            mainPanel.remove(gamePanel);
+        }
+        gamePanel = new GameMain(this, isVsAI, aiLevel);
+        mainPanel.add(gamePanel, "Game");
+        cardLayout.show(mainPanel, "Game");
     }
 }

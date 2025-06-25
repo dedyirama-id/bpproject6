@@ -18,7 +18,7 @@ public class MainMenuPanel extends JPanel {
 
         // Buttons
         JButton historyButton = new JButton("📅 History");
-        JButton startButton = new JButton("🚀 Start!");
+        JButton startButton = new JButton("🚀 Play vs Player!");
         JButton aiButton = new JButton("🤖 Play vs AI");
         JButton exitButton = new JButton("🚫 Exit");
 
@@ -49,8 +49,6 @@ public class MainMenuPanel extends JPanel {
         add(Box.createVerticalStrut(15));
         add(aiButton);
         add(Box.createVerticalGlue());
-        add(Box.createVerticalStrut(10));
-        add(aiLevelSelector);
 
 
         // Actions
@@ -64,15 +62,19 @@ public class MainMenuPanel extends JPanel {
             mainFrame.showHistoryPanelForUser(user.getId());
         });
 
-        startButton.addActionListener(_ -> mainFrame.getCardLayout().show(mainFrame.getMainPanel(), "Game"));
-
-        exitButton.addActionListener(_ -> System.exit(0));
-
+        startButton.addActionListener(_ -> mainFrame.startGame(false, "hard")); // mode player
         aiButton.addActionListener(_ -> {
-            mainFrame.isVsAI = true;
-            mainFrame.getCardLayout().show(mainFrame.getMainPanel(), "Game");
-    });
-}
+            String[] options = {"easy", "medium", "hard"};
+            String selected = (String) JOptionPane.showInputDialog(
+                    this, "Select AI Difficulty:", "Choose Difficulty",
+                    JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
+            if (selected != null) {
+                mainFrame.startGame(true, selected); // mode AI
+            }
+        });
+
+
+    }
 
 class GameModePanel extends JPanel {
     public JButton btnPvP;

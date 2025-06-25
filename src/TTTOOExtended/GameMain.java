@@ -15,8 +15,10 @@ public class GameMain extends JPanel {
     private final JLabel statusBar;
     private final JLabel savingLabel;
     private volatile boolean isSavingInProgress = false;
+    private final boolean isVsAI;
+    private final String aiLevel;
 
-    public GameMain(MainFrame mainFrame) {
+    public GameMain(MainFrame mainFrame, boolean isVsAI, String aiLevel) {
         setLayout(new BorderLayout());
         this.isVsAI = mainFrame.isVsAI;
         this.aiLevel = mainFrame.aiLevel;
@@ -52,6 +54,11 @@ public class GameMain extends JPanel {
                         if (board.currentState == State.PLAYING) {
                             SoundEffect.EAT_FOOD.play();
                             board.currentPlayer = (board.currentPlayer == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
+
+                            if (isVsAI && board.currentPlayer == Seed.NOUGHT) {
+                                aiMove();
+                            }
+
                         } else {
                             SoundEffect.DIE.play();
                             showSavingStatus();
@@ -64,10 +71,10 @@ public class GameMain extends JPanel {
                 }
 
                 repaint();
-
-                if (isVsAI && board.currentPlayer == Seed.NOUGHT && board.currentState == State.PLAYING) {
-                    aiMove();
+                if (!isVsAI || board.currentPlayer != Seed.NOUGHT || board.currentState != State.PLAYING) {
+                    return;
                 }
+                aiMove();
 
             }
         });
@@ -161,10 +168,6 @@ public class GameMain extends JPanel {
             }
         }
     }
-    // AI CONFIG
-    private boolean isVsAI = true; // true = mode AI, false = PvP
-    private String aiLevel = "hard"; // "easy", "medium", "hard"
-
     // AI LOGIC
     private void aiMove() {
         if (board.currentState != State.PLAYING) return;
