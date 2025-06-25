@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * GameMain is the panel that handles the Tic Tac Toe gameplay.
@@ -17,11 +19,13 @@ public class GameMain extends JPanel {
     private volatile boolean isSavingInProgress = false;
     private final boolean isVsAI;
     private final String aiLevel;
+    private final Seed playerSeed;
 
-    public GameMain(MainFrame mainFrame, boolean isVsAI, String aiLevel) {
+    public GameMain(MainFrame mainFrame, boolean isVsAI, String aiLevel, Seed playerSeed) {
         setLayout(new BorderLayout());
         this.isVsAI = mainFrame.isVsAI;
         this.aiLevel = mainFrame.aiLevel;
+        this.playerSeed = playerSeed;
 
 
         // Header panel
@@ -48,6 +52,7 @@ public class GameMain extends JPanel {
                             colSelected >= 0 && colSelected < Board.COLS &&
                             board.cells[rowSelected][colSelected].content == Seed.NO_SEED) {
 
+                        if (isVsAI && board.currentPlayer != playerSeed) return;
                         board.cells[rowSelected][colSelected].content = board.currentPlayer;
                         board.updateGame(board.currentPlayer, rowSelected, colSelected);
 
@@ -55,8 +60,8 @@ public class GameMain extends JPanel {
                             SoundEffect.EAT_FOOD.play();
                             board.currentPlayer = (board.currentPlayer == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
 
-                            if (isVsAI && board.currentPlayer == Seed.NOUGHT) {
-                                aiMove();
+                            if (isVsAI && board.currentPlayer != playerSeed && board.currentState == State.PLAYING) {
+                                SwingUtilities.invokeLater(() -> aiMove());
                             }
 
                         } else {
@@ -66,16 +71,17 @@ public class GameMain extends JPanel {
                     }
                 } else if (!isSavingInProgress) {
                     board.initGame();
+
+                    if (isVsAI && playerSeed == Seed.NOUGHT) {
+                        board.currentPlayer = Seed.CROSS;  // AI jalan dulu
+                        aiMove();                          // AI langsung main
+                    }
+
                     SoundEffect.initGame();
                     savingLabel.setText("");
                 }
 
                 repaint();
-                if (!isVsAI || board.currentPlayer != Seed.NOUGHT || board.currentState != State.PLAYING) {
-                    return;
-                }
-                aiMove();
-
             }
         });
 
@@ -116,6 +122,14 @@ public class GameMain extends JPanel {
             }
         };
 
+        board.initGame();
+        board.currentPlayer = this.playerSeed;
+
+        if (isVsAI && playerSeed == Seed.NOUGHT) {
+            board.currentPlayer = Seed.CROSS;
+            SwingUtilities.invokeLater(() -> aiMove());
+        }
+
         SoundEffect.initGame();
     }
 
@@ -129,10 +143,17 @@ public class GameMain extends JPanel {
 
         resetButton.addActionListener(_ -> {
             if (isSavingInProgress) return;
+
             board.initGame();
+            board.currentPlayer = playerSeed; // 🔥 Sync ulang siapa yang mulai
             SoundEffect.initGame();
             savingLabel.setText("");
             repaint();
+
+            if (isVsAI && playerSeed == Seed.NOUGHT) {
+                board.currentPlayer = Seed.CROSS;
+                SwingUtilities.invokeLater(() -> aiMove());
+            }
         });
 
         headerPanel.add(backButton);
@@ -199,7 +220,7 @@ public class GameMain extends JPanel {
     }
 
     private int[] randomMove() {
-        java.util.List<int[]> empty = new java.util.ArrayList<>();
+        List<int[]> empty = new ArrayList<>();
         for (int r = 0; r < Board.ROWS; r++) {
             for (int c = 0; c < Board.COLS; c++) {
                 if (board.cells[r][c].content == Seed.NO_SEED) {

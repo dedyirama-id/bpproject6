@@ -17,6 +17,7 @@ import java.util.List;
 public class MainFrame extends JFrame {
     public boolean isVsAI = true;
     public String aiLevel = "hard";
+    public String playerSeed = "X";
 
     private GameMain gamePanel = null;
     private final CardLayout cardLayout;
@@ -43,12 +44,15 @@ public class MainFrame extends JFrame {
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
 
+        // Tambahkan seedEnum
+        Seed seedEnum = "X".equals(playerSeed) ? Seed.CROSS : Seed.NOUGHT;
+
         // Add all panels to the main container
         mainPanel.add(new WelcomePanel(cardLayout, mainPanel), "Welcome");
         mainPanel.add(new RegisterPanel(cardLayout, mainPanel), "Register");
         mainPanel.add(new LoginPanel(cardLayout, mainPanel, this), "Login");
         mainPanel.add(new MainMenuPanel(this), "MainMenu");
-        mainPanel.add(new GameMain(this, isVsAI, aiLevel), "Game");
+        mainPanel.add(new GameMain(this, isVsAI, aiLevel, seedEnum ), "Game");
 
         // Add main panel to the center of the frame
         add(mainPanel, BorderLayout.CENTER);
@@ -57,7 +61,6 @@ public class MainFrame extends JFrame {
         setVisible(true);
         cardLayout.show(mainPanel, "Welcome");
     }
-
 
 
     // Updates the user info label at the top of the screen
@@ -93,12 +96,16 @@ public class MainFrame extends JFrame {
         return mainPanel;
     }
 
-    public void startGame(boolean isVsAI, String aiLevel) {
+    public void startGame(boolean isVsAI, String aiLevel, String playerSeedString) {
+        this.isVsAI = isVsAI;
+        this.aiLevel = aiLevel;
+        this.playerSeed = "X"; // default
         if (gamePanel != null) {
             mainPanel.remove(gamePanel);
         }
-        gamePanel = new GameMain(this, isVsAI, aiLevel);
-        mainPanel.add(gamePanel, "Game");
-        cardLayout.show(mainPanel, "Game");
+            Seed seedEnum = "X".equals(playerSeedString) ? Seed.CROSS : Seed.NOUGHT;
+            gamePanel = new GameMain(this, isVsAI, aiLevel, seedEnum);
+            mainPanel.add(gamePanel, "Game");
+            cardLayout.show(mainPanel, "Game");
+        }
     }
-}

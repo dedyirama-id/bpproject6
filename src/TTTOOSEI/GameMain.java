@@ -40,6 +40,7 @@ public class GameMain extends JFrame {
                     }
                 } else {
                     board.initGame();
+                    
                     SoundEffect.initGame();
                 }
 
@@ -63,6 +64,7 @@ public class GameMain extends JFrame {
 
         board = new Board();
         SoundEffect.initGame();
+
     }
 
     class DrawCanvas extends JPanel {
