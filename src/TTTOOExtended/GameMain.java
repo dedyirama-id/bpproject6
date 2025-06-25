@@ -27,7 +27,6 @@ public class GameMain extends JPanel {
         this.aiLevel = mainFrame.aiLevel;
         this.playerSeed = playerSeed;
 
-
         // Header panel
         JPanel headerPanel = getHeaderPanel(mainFrame);
         add(headerPanel, BorderLayout.NORTH);
@@ -52,7 +51,6 @@ public class GameMain extends JPanel {
                             colSelected >= 0 && colSelected < Board.COLS &&
                             board.cells[rowSelected][colSelected].content == Seed.NO_SEED) {
 
-                        if (isVsAI && board.currentPlayer != playerSeed) return;
                         board.cells[rowSelected][colSelected].content = board.currentPlayer;
                         board.updateGame(board.currentPlayer, rowSelected, colSelected);
 
@@ -71,12 +69,6 @@ public class GameMain extends JPanel {
                     }
                 } else if (!isSavingInProgress) {
                     board.initGame();
-
-                    if (isVsAI && playerSeed == Seed.NOUGHT) {
-                        board.currentPlayer = Seed.CROSS;  // AI jalan dulu
-                        aiMove();                          // AI langsung main
-                    }
-
                     SoundEffect.initGame();
                     CustomSoundPlayer.playStartSound();
                     savingLabel.setText("");
@@ -123,14 +115,6 @@ public class GameMain extends JPanel {
             }
         };
 
-        board.initGame();
-        board.currentPlayer = this.playerSeed;
-
-        if (isVsAI && playerSeed == Seed.NOUGHT) {
-            board.currentPlayer = Seed.CROSS;
-            SwingUtilities.invokeLater(() -> aiMove());
-        }
-
         SoundEffect.initGame();
     }
 
@@ -144,7 +128,6 @@ public class GameMain extends JPanel {
 
         resetButton.addActionListener(_ -> {
             if (isSavingInProgress) return;
-
             board.initGame();
             board.currentPlayer = playerSeed;
             SoundEffect.initGame();
