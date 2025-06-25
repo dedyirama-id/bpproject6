@@ -7,8 +7,8 @@ import java.awt.*;
 import java.io.File;
 
 public class CustomIconPanel extends JPanel {
-    private JLabel xIconLabel;
-    private JLabel oIconLabel;
+    private final JLabel xIconLabel;
+    private final JLabel oIconLabel;
     private ImageIcon iconX;
     private ImageIcon iconO;
 
