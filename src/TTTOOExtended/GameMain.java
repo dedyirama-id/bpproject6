@@ -1,5 +1,7 @@
 package TTTOOExtended;
 
+import TTTOOExtended.utils.CustomSoundPlayer;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -55,7 +57,7 @@ public class GameMain extends JPanel {
                         board.updateGame(board.currentPlayer, rowSelected, colSelected);
 
                         if (board.currentState == State.PLAYING) {
-                            SoundEffect.EAT_FOOD.play();
+                            CustomSoundPlayer.playMoveSound();
                             board.currentPlayer = (board.currentPlayer == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
 
                             if (isVsAI && board.currentPlayer != playerSeed && board.currentState == State.PLAYING) {
@@ -63,7 +65,7 @@ public class GameMain extends JPanel {
                             }
 
                         } else {
-                            SoundEffect.DIE.play();
+                            CustomSoundPlayer.playEndSound();
                             showSavingStatus();
                         }
                     }
@@ -76,6 +78,7 @@ public class GameMain extends JPanel {
                     }
 
                     SoundEffect.initGame();
+                    CustomSoundPlayer.playStartSound();
                     savingLabel.setText("");
                 }
 
@@ -145,6 +148,7 @@ public class GameMain extends JPanel {
             board.initGame();
             board.currentPlayer = playerSeed;
             SoundEffect.initGame();
+            CustomSoundPlayer.playStartSound();
             savingLabel.setText("");
             repaint();
 

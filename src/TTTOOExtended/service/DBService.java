@@ -4,8 +4,6 @@ import TTTOOExtended.model.GameHistory;
 import TTTOOExtended.model.User;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * DBService provides database access for user registration, authentication,
@@ -68,12 +66,20 @@ public class DBService {
     }
 
     // Retrieves all game histories for a specific user, ordered by latest first
-    public static List<GameHistory> getGameHistoriesByUserId(int userId) {
-        List<GameHistory> historyList = new ArrayList<>();
+    public static GameHistory[] getGameHistoriesByUserId(int userId) {
+        GameHistory[] historyList = new GameHistory[0];
         String sql = "SELECT * FROM game_history WHERE user_id = ? ORDER BY timestamp DESC";
-        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
+
+            rs.last();
+            int rowCount = rs.getRow();
+            System.out.println(rowCount);
+            historyList = new GameHistory[rowCount];
+
+            rs.beforeFirst();
+            int index = 0;
             while (rs.next()) {
                 GameHistory history = new GameHistory(
                         rs.getInt("id"),
@@ -82,7 +88,8 @@ public class DBService {
                         rs.getString("final_state"),
                         rs.getString("timestamp")
                 );
-                historyList.add(history);
+                historyList[index] = history;
+                index++;
             }
         } catch (SQLException e) {
             logger.severe("Failed to load game history: " + e.getMessage());

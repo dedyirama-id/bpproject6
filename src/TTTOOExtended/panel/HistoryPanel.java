@@ -5,7 +5,6 @@ import TTTOOExtended.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 /**
  * HistoryPanel displays a list of past game sessions,
@@ -16,14 +15,14 @@ public class HistoryPanel extends JPanel {
     private final JLabel lblWinner;
     private final JButton[][] cellButtons;
     private final JButton btnPrev, btnNext;
-    private final List<GameHistory> histories;
+    private final GameHistory[] histories;
     private int currentIndex = 0;
 
-    public HistoryPanel(MainFrame mainFrame, List<GameHistory> histories) {
+    public HistoryPanel(MainFrame mainFrame, GameHistory[] histories) {
         this.histories = histories;
         setLayout(new BorderLayout());
 
-        // Header panel with timestamp and winner
+        // Header panel
         JPanel topPanel = new JPanel(new GridLayout(1, 2));
         topPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         lblTimestamp = new JLabel("");
@@ -32,7 +31,7 @@ public class HistoryPanel extends JPanel {
         topPanel.add(lblWinner);
         add(topPanel, BorderLayout.NORTH);
 
-        // Board panel with 3x3 disabled buttons
+        // Board panel
         JPanel boardPanel = new JPanel(new GridLayout(3, 3));
         cellButtons = new JButton[3][3];
         for (int i = 0; i < 3; i++) {
@@ -46,13 +45,13 @@ public class HistoryPanel extends JPanel {
         }
         add(boardPanel, BorderLayout.CENTER);
 
-        // Navigation panel with Prev, Next, and Back
+        // Navigation panel
         JPanel navPanel = new JPanel();
         btnPrev = new JButton("Prev");
         btnNext = new JButton("Next");
 
         btnPrev.addActionListener(_ -> {
-            if (currentIndex < histories.size() - 1) {
+            if (currentIndex < histories.length - 1) {
                 currentIndex++;
                 loadHistory();
             }
@@ -74,7 +73,7 @@ public class HistoryPanel extends JPanel {
         add(navPanel, BorderLayout.SOUTH);
 
         // Initial display
-        if (!histories.isEmpty()) {
+        if (histories.length > 0) {
             loadHistory();
         } else {
             lblTimestamp.setText("No history.");
@@ -84,9 +83,8 @@ public class HistoryPanel extends JPanel {
         }
     }
 
-    // Displays the game state at the current index
     private void loadHistory() {
-        GameHistory game = histories.get(currentIndex);
+        GameHistory game = histories[currentIndex];
         lblTimestamp.setText(game.timestamp);
         lblWinner.setText("Winner: " + game.winner);
 
@@ -97,7 +95,7 @@ public class HistoryPanel extends JPanel {
             }
         }
 
-        btnPrev.setEnabled(currentIndex < histories.size() - 1);
+        btnPrev.setEnabled(currentIndex < histories.length - 1);
         btnNext.setEnabled(currentIndex > 0);
     }
 }
