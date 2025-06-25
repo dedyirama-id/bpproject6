@@ -4,8 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * GameMain is the panel that handles the Tic Tac Toe gameplay.
@@ -145,7 +143,7 @@ public class GameMain extends JPanel {
             if (isSavingInProgress) return;
 
             board.initGame();
-            board.currentPlayer = playerSeed; // 🔥 Sync ulang siapa yang mulai
+            board.currentPlayer = playerSeed;
             SoundEffect.initGame();
             savingLabel.setText("");
             repaint();
@@ -220,16 +218,23 @@ public class GameMain extends JPanel {
     }
 
     private int[] randomMove() {
-        List<int[]> empty = new ArrayList<>();
+        int[][] empty = new int[9][3];
+        int count = 0;
+
         for (int r = 0; r < Board.ROWS; r++) {
             for (int c = 0; c < Board.COLS; c++) {
                 if (board.cells[r][c].content == Seed.NO_SEED) {
-                    empty.add(new int[]{r, c});
+                    empty[count][0] = r;
+                    empty[count][1] = c;
+                    count++;
                 }
             }
         }
-        if (empty.isEmpty()) return null;
-        return empty.get((int)(Math.random() * empty.size()));
+
+        if (count == 0) return null;
+
+        int choice = (int)(Math.random() * count);
+        return new int[]{empty[choice][0], empty[choice][1]};
     }
 
     private int[] findBestMove(Seed aiSeed) {
