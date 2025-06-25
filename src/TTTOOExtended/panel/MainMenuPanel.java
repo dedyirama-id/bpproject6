@@ -36,6 +36,7 @@ public class MainMenuPanel extends JPanel {
         buttonSize = new Dimension(200, 60);
         historyButton.setMaximumSize(buttonSize);
         customSoundButton.setMaximumSize(buttonSize);
+        customIconButton.setMaximumSize(buttonSize);
         startButton.setMaximumSize(buttonSize);
         aiButton.setMaximumSize(buttonSize);
         exitButton.setMaximumSize(buttonSize);
