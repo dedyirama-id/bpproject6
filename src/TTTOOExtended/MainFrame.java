@@ -61,7 +61,6 @@ public class MainFrame extends JFrame {
         cardLayout.show(mainPanel, "Welcome");
     }
 
-
     // Updates the user info label at the top of the screen
     public void updateUserInfoLabel() {
         User user = Session.getUser();

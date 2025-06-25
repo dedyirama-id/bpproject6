@@ -35,11 +35,14 @@ public class MainMenuPanel extends JPanel {
 
         buttonSize = new Dimension(200, 60);
         historyButton.setMaximumSize(buttonSize);
+        customSoundButton.setMaximumSize(buttonSize);
+        customIconButton.setMaximumSize(buttonSize);
         startButton.setMaximumSize(buttonSize);
         aiButton.setMaximumSize(buttonSize);
         exitButton.setMaximumSize(buttonSize);
 
         historyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        customSoundButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         aiButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -73,6 +76,11 @@ public class MainMenuPanel extends JPanel {
             }
 
             mainFrame.showHistoryPanelForUser(user.getId());
+        });
+
+        customSoundButton.addActionListener(_ -> {
+            mainFrame.getMainPanel().add(new CustomSoundEffectPanel(mainFrame), "CustomSound");
+            mainFrame.getCardLayout().show(mainFrame.getMainPanel(), "CustomSound");
         });
 
         String[] selectedChar = new String[1];
@@ -119,7 +127,6 @@ public class MainMenuPanel extends JPanel {
         aiButton.addActionListener(_ -> {
             mainFrame.startGame(true, "hard", selectedChar[0]);
         });
-
     }
 
     class GameModePanel extends JPanel {
@@ -144,5 +151,3 @@ public class MainMenuPanel extends JPanel {
         }
     }
 }
-
-
