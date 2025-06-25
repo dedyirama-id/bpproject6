@@ -1,7 +1,6 @@
 package TTTOOExtended.panel;
 
 import TTTOOExtended.MainFrame;
-
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
