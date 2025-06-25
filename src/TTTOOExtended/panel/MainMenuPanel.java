@@ -45,11 +45,11 @@ public class MainMenuPanel extends JPanel {
         // Layout
         add(Box.createVerticalGlue());
         add(historyButton);
-        add(Box.createVerticalStrut(15));
+        add(Box.createVerticalStrut(16));
         add(startButton);
-        add(Box.createVerticalStrut(15));
+        add(Box.createVerticalStrut(16));
         add(aiButton);
-        add(Box.createVerticalStrut(15));
+        add(Box.createVerticalStrut(16));
         add(exitButton);
         add(Box.createVerticalGlue());
 
